@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap");
+@import "tailwindcss";
+
+html,
+body {
+   font-family: "Poppins", sans-serif;
+}
+
+@theme {
+   --color-light: oklch(97% 0 0);
+   --color-dark: oklch(20.904% 0.00002 271.152);
+}
+
+/* Scrollbar width */
+::-webkit-scrollbar {
+   width: 5px;
+}
+
+/* Scrollbar thumb */
+::-webkit-scrollbar-thumb {
+   background-color: oklch(35.618% 0.00004 271.152);
+   border-radius: 4px;
+   transition: background-color 0.3s ease;
+}
+
+/* Scrollbar thumb hover */
+::-webkit-scrollbar-thumb:hover {
+   background-color: oklch(58.632% 0.00007 271.152);
+}
+
+/* Scrollbar corner */
+::-webkit-scrollbar-corner {
+   background-color: #4a4a4a;
+}
+
+/* Scrollbar track */
+::-webkit-scrollbar-track {
+   background-color: oklch(20.904% 0.00002 271.152);
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+   display: none;
+}
+
+.hide-scrollbar {
+   -ms-overflow-style: none;
+   scrollbar-width: none;
+}
+
+.logoutbtn:hover::after {
+   content: "Logout";
+   position: absolute;
+   right: 0.6rem;
+   top: 3rem;
+   background-color: oklch(85.746% 0.17517 88.493 / 0.105);
+   color: oklch(97.015% 0.00011 271.152 / 0.632);
+   padding: 4px 8px;
+   border-radius: 4px;
+   font-size: 12px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+   -webkit-appearance: none;
+   margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+   -moz-appearance: textfield;
+}
+
+button {
+   cursor: pointer;
+}
