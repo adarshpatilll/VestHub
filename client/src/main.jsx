@@ -4,6 +4,16 @@ import App from "./App.jsx";
 import "./index.css";
 import AppProvider from "./provider/AppProvider.jsx";
 
+// Register service worker
+if ("serviceWorker" in navigator) {
+   window.addEventListener("load", () => {
+      navigator.serviceWorker
+         .register("/service-worker.js")
+         .then((reg) => console.log("SW registered:", reg))
+         .catch((err) => console.error("SW registration failed:", err));
+   });
+}
+
 createRoot(document.getElementById("root")).render(
    <StrictMode>
       <AppProvider>
@@ -11,15 +21,3 @@ createRoot(document.getElementById("root")).render(
       </AppProvider>
    </StrictMode>,
 );
-
-// --- Service Worker Registration ---
-if ("serviceWorker" in navigator) {
-   window.addEventListener("load", () => {
-      navigator.serviceWorker
-         .register("/service-worker.js")
-         .then((reg) => console.log("Service Worker registered:", reg.scope))
-         .catch((err) =>
-            console.error("Service Worker registration failed:", err),
-         );
-   });
-}
