@@ -5,12 +5,12 @@ import "./index.css";
 import AppProvider from "./provider/AppProvider.jsx";
 
 // Register service worker
-if ("serviceWorker" in navigator) {
+if (import.meta.env.DEV && "serviceWorker" in navigator) {
    window.addEventListener("load", () => {
       navigator.serviceWorker
          .register("/service-worker.js")
-         .then((reg) => console.log("SW registered:", reg))
-         .catch((err) => console.error("SW registration failed:", err));
+         .then((reg) => console.log("Dev SW registered:", reg))
+         .catch((err) => console.error("Dev SW registration failed:", err));
    });
 }
 

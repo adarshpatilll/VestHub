@@ -23,6 +23,7 @@ import SharedFunds from "../pages/SharedFunds";
 import SharedSenders from "../pages/SharedSenders";
 
 export const router = createBrowserRouter([
+   // Public routes
    {
       element: <PublicRoute />, // wrapper for all public pages
       children: [
@@ -36,10 +37,14 @@ export const router = createBrowserRouter([
          },
       ],
    },
+
+   // Universal routes
    {
       path: "/new-password", // universal route (no auth wrapper)
       element: <NewPassword />,
    },
+
+   // Protected routes
    {
       element: <ProtectedRoute />, // wrapper for all protected pages
       children: [

@@ -3,11 +3,11 @@ import FundCard from "../components/FundCard";
 import { toTitleCase } from "../lib/toTitleCase";
 import BackButton from "../components/BackButtonOrLink";
 import { AnimatePresence, motion } from "framer-motion";
-import { Loader2, Search, X } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { searchFilter } from "../lib/searchFilter";
 import { getSharedFundsBySenderId } from "../firebase/data";
 import { useParams } from "react-router-dom";
-import CircularLoader from './../components/CircularLoader';
+import CircularLoader from "./../components/CircularLoader";
 
 const SharedFunds = () => {
    const { senderId } = useParams();
@@ -214,9 +214,7 @@ const SharedFunds = () => {
                />
 
                {/* Loading Spinner */}
-               {loading && (
-                  <CircularLoader label="Loading Funds..." />
-               )}
+               {loading && <CircularLoader label="Loading Funds..." />}
 
                {/* No Funds Message */}
                {!loading && filteredFunds.length === 0 && (
