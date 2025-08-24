@@ -291,11 +291,11 @@ const AddFund = () => {
 						/>
 					</div>
 				</motion.div>
-				<div className="flex w-full justify-center px-4">
+				<div className="">
 					<motion.button
 						onClick={handleAddFund}
 						disabled={loading}
-						className={`w-full max-w-xs rounded-lg bg-yellow-600 p-3 font-medium hover:bg-yellow-700 ${
+						className={`w-full sm:max-w-xs rounded-lg bg-yellow-600 p-3 font-medium hover:bg-yellow-700 ${
 							loading ? "cursor-not-allowed bg-yellow-700" : ""
 						}`}
 						initial={{ opacity: 0, scale: 0.95 }}
