@@ -2,7 +2,6 @@ import fs from "fs";
 import { SitemapStream, streamToPromise } from "sitemap";
 import path from "path";
 
-// List all public routes
 const routes = [
    "/",
    "/login",
@@ -18,7 +17,6 @@ const routes = [
    "/new-password",
 ];
 
-// Base URL
 const BASE_URL = "https://finstack.tech";
 
 async function generateSitemap() {
@@ -35,14 +33,13 @@ async function generateSitemap() {
 
    const sitemap = await streamToPromise(sitemapStream);
 
-   // ✅ Corrected path: directly to public folder
-   const outputPath = path.resolve("./client/public/sitemap.xml");
+   // ✅ Save directly into public/
+   fs.writeFileSync(
+      path.resolve("client/public/sitemap.xml"),
+      sitemap.toString(),
+   );
 
-   // Make sure the folder exists before writing
-   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-
-   fs.writeFileSync(outputPath, sitemap.toString());
-   console.log("✅ Sitemap generated at client/public/sitemap.xml");
+   console.log("✅ Sitemap generated at /public/sitemap.xml");
 }
 
 generateSitemap();
