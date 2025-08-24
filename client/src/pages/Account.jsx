@@ -407,6 +407,7 @@ const Account = () => {
                      }
                      onChange={(opt) => setSelectedUser(opt)}
                      forOnChangeReturnsObject={true}
+                     autoFocus={false}
                   />
 
                   <motion.button

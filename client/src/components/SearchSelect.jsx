@@ -8,6 +8,7 @@ export default function SearchSelect({
    value,
    onChange,
    allowCreate,
+   autoFocus = "true",
    forOnChangeReturnsObject = false,
 }) {
    const [open, setOpen] = useState(false);
@@ -64,7 +65,7 @@ export default function SearchSelect({
                   type="text"
                   placeholder={`Search or ${allowCreate ? "type new..." : "select an option..."}`}
                   value={query}
-                  autoFocus
+                  autoFocus={autoFocus}
                   onChange={(e) => setQuery(e.target.value)}
                   className="w-full rounded-t-lg border-b border-neutral-700 bg-neutral-800 px-3 py-2 text-gray-200 focus:outline-none"
                />
