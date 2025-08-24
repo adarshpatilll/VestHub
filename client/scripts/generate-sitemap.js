@@ -13,7 +13,6 @@ const routes = [
    "/funds/edit-funds",
    "/funds/add-fund",
    "/funds/shared-funds",
-   "/funds/shared-funds/:senderId",
    "/account",
    "/reset-password",
    "/new-password",
@@ -34,8 +33,11 @@ async function generateSitemap() {
    sitemapStream.end();
 
    const sitemap = await streamToPromise(sitemapStream);
-   fs.writeFileSync(path.resolve("dist/sitemap.xml"), sitemap.toString());
-   console.log("Sitemap generated at /dist/sitemap.xml");
+   fs.writeFileSync(
+      path.resolve("client/public/sitemap.xml"),
+      sitemap.toString(),
+   );
+   console.log("✅ Sitemap generated at /public/sitemap.xml");
 }
 
 generateSitemap();
