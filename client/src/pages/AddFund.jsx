@@ -291,7 +291,7 @@ const AddFund = () => {
 						/>
 					</div>
 				</motion.div>
-				<div className="flex justify-center px-4">
+				<div className="flex w-full justify-center px-4">
 					<motion.button
 						onClick={handleAddFund}
 						disabled={loading}
@@ -305,7 +305,6 @@ const AddFund = () => {
 						{loading ? "Adding..." : "Add Fund"}
 					</motion.button>
 				</div>
-				 ̰
 			</motion.div>
 		</motion.div>
 	);
