@@ -24,7 +24,7 @@ const routes = [
 ];
 
 // Base URL
-const BASE_URL = "https://finstack.tech";
+const BASE_URL = "https://www.finstack.tech";
 
 async function generateSitemap() {
    const sitemapStream = new SitemapStream({ hostname: BASE_URL });
