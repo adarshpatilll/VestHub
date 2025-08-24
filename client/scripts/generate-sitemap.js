@@ -1,7 +1,13 @@
 import fs from "fs";
 import { SitemapStream, streamToPromise } from "sitemap";
 import path from "path";
+import { fileURLToPath } from "url";
 
+// ✅ Fix for __dirname in ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// List all public routes
 const routes = [
    "/",
    "/login",
@@ -17,6 +23,7 @@ const routes = [
    "/new-password",
 ];
 
+// Base URL
 const BASE_URL = "https://finstack.tech";
 
 async function generateSitemap() {
@@ -29,17 +36,16 @@ async function generateSitemap() {
          priority: 0.8,
       });
    });
+
    sitemapStream.end();
 
    const sitemap = await streamToPromise(sitemapStream);
 
-   // ✅ Save directly into public/
-   fs.writeFileSync(
-      path.resolve("client/public/sitemap.xml"),
-      sitemap.toString(),
-   );
+   // ✅ Always inside client/public
+   const outputPath = path.resolve(__dirname, "../public/sitemap.xml");
+   fs.writeFileSync(outputPath, sitemap.toString());
 
-   console.log("✅ Sitemap generated at /public/sitemap.xml");
+   console.log(`✅ Sitemap generated at ${outputPath}`);
 }
 
 generateSitemap();
