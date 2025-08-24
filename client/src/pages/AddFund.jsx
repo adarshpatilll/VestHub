@@ -157,7 +157,6 @@ const AddFund = () => {
 					<h2 className="text-lg font-semibold">Add Funds</h2>
 					<BackButtonOrLink isLink={true} />
 				</motion.div>
-
 				{/* Form */}
 				<motion.div
 					className="grid gap-4 md:grid-cols-2"
@@ -292,20 +291,21 @@ const AddFund = () => {
 						/>
 					</div>
 				</motion.div>
-
-				{/* Button */}
-				<motion.button
-					onClick={handleAddFund}
-					disabled={loading}
-					className={`w-full rounded-lg bg-yellow-600 p-3 font-medium hover:bg-yellow-700 md:max-w-sm ${
-						loading ? "cursor-not-allowed bg-yellow-700" : ""
-					}`}
-					initial={{ opacity: 0, scale: 0.95 }}
-					animate={{ opacity: 1, scale: 1 }}
-					transition={{ delay: 0.5, duration: 0.3 }}
-				>
-					{loading ? "Adding..." : "Add Fund"}
-				</motion.button>
+				<div className="flex justify-center px-4">
+					<motion.button
+						onClick={handleAddFund}
+						disabled={loading}
+						className={`w-full max-w-xs rounded-lg bg-yellow-600 p-3 font-medium hover:bg-yellow-700 ${
+							loading ? "cursor-not-allowed bg-yellow-700" : ""
+						}`}
+						initial={{ opacity: 0, scale: 0.95 }}
+						animate={{ opacity: 1, scale: 1 }}
+						transition={{ delay: 0.5, duration: 0.3 }}
+					>
+						{loading ? "Adding..." : "Add Fund"}
+					</motion.button>
+				</div>
+				 ̰
 			</motion.div>
 		</motion.div>
 	);
