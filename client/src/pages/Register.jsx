@@ -123,26 +123,28 @@ const Register = () => {
          animate="visible"
       >
          <motion.div
-            className="bg-dark w-full max-w-md overflow-hidden rounded-2xl border border-neutral-700 shadow-2xl"
+            className="bg-dark max-xs:max-w-xs w-full max-w-md overflow-hidden rounded-2xl border border-neutral-700 shadow-2xl sm:max-w-lg"
             variants={cardVariants}
             initial="hidden"
             animate="visible"
          >
             {/* Header */}
             <motion.div
-               className="space-y-2 p-6 text-center"
+               className="space-y-2 p-6 text-center sm:p-8"
                variants={headerVariants}
             >
-               <h1 className="text-light text-3xl font-bold">Create Account</h1>
-               <p className="text-light/60 text-sm">
+               <h1 className="text-light max-xs:text-xl text-3xl font-bold sm:text-4xl">
+                  Create Account
+               </h1>
+               <p className="text-light/60 max-xs:text-xs text-sm sm:text-base">
                   Sign up to start managing your funds
                </p>
             </motion.div>
 
             {/* Google Register */}
-            <div className="space-y-5 px-6">
+            <div className="max-xs:gap-3 flex flex-col gap-5 px-6 sm:gap-6 sm:px-8">
                <motion.button
-                  className="text-light flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-neutral-700 bg-neutral-800 font-medium transition hover:bg-neutral-700"
+                  className="text-light max-xs:text-sm flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-neutral-700 bg-neutral-800 font-medium transition hover:bg-neutral-700"
                   onClick={loginWithGoogle}
                >
                   <FcGoogle size={20} />
@@ -154,7 +156,7 @@ const Register = () => {
                   <div className="absolute inset-0 flex items-center">
                      <div className="w-full border-t border-neutral-700"></div>
                   </div>
-                  <div className="relative flex justify-center text-xs uppercase">
+                  <div className="max-xs:text-[11px] relative flex justify-center text-xs uppercase">
                      <span className="bg-dark text-light/30 px-2">
                         or sign up with
                      </span>
@@ -164,11 +166,11 @@ const Register = () => {
                {/* Form */}
                <motion.form
                   onSubmit={handleSubmit}
-                  className="space-y-5"
+                  className="max-xs:gap-3 flex flex-col gap-5 sm:gap-6"
                   variants={formVariants}
                   initial="hidden"
                   animate="visible"
-                  custom={shake} // 👈 pass shake state here
+                  custom={shake}
                   noValidate
                >
                   {/* Name */}
@@ -187,7 +189,7 @@ const Register = () => {
                            placeholder="Enter your name"
                            value={name}
                            onChange={(e) => setName(e.target.value)}
-                           className={`text-light placeholder-light/35 h-11 w-full rounded-lg border bg-neutral-800 pr-3 pl-10 focus:ring focus:ring-yellow-300 focus:outline-none ${
+                           className={`text-light max-xs:text-sm placeholder-light/35 h-11 w-full rounded-lg border bg-neutral-800 pr-3 pl-10 focus:ring focus:ring-yellow-300 focus:outline-none ${
                               errors.name
                                  ? "border-red-500 focus:ring-red-400"
                                  : "border-neutral-700"
@@ -225,7 +227,7 @@ const Register = () => {
                            placeholder="Enter your email"
                            value={email}
                            onChange={(e) => setEmail(e.target.value)}
-                           className={`text-light placeholder-light/35 h-11 w-full rounded-lg border bg-neutral-800 pr-3 pl-10 focus:ring focus:ring-yellow-300 focus:outline-none ${
+                           className={`text-light max-xs:text-sm placeholder-light/35 h-11 w-full rounded-lg border bg-neutral-800 pr-3 pl-10 focus:ring focus:ring-yellow-300 focus:outline-none ${
                               errors.email
                                  ? "border-red-500 focus:ring-red-400"
                                  : "border-neutral-700"
@@ -263,7 +265,7 @@ const Register = () => {
                            placeholder="Enter your password"
                            value={password}
                            onChange={(e) => setPassword(e.target.value)}
-                           className={`text-light placeholder-light/35 h-11 w-full rounded-lg border bg-neutral-800 pr-10 pl-10 focus:ring focus:ring-yellow-300 focus:outline-none ${
+                           className={`text-light max-xs:text-sm placeholder-light/35 h-11 w-full rounded-lg border bg-neutral-800 pr-10 pl-10 focus:ring focus:ring-yellow-300 focus:outline-none ${
                               errors.password
                                  ? "border-red-500 focus:ring-red-400"
                                  : "border-neutral-700"
@@ -312,7 +314,7 @@ const Register = () => {
                            placeholder="Re-enter your password"
                            value={confirmPassword}
                            onChange={(e) => setConfirmPassword(e.target.value)}
-                           className={`text-light placeholder-light/35 h-11 w-full rounded-lg border bg-neutral-800 pr-10 pl-10 focus:ring focus:ring-yellow-300 focus:outline-none ${
+                           className={`text-light max-xs:text-sm placeholder-light/35 h-11 w-full rounded-lg border bg-neutral-800 pr-10 pl-10 focus:ring focus:ring-yellow-300 focus:outline-none ${
                               errors.confirmPassword
                                  ? "border-red-500 focus:ring-red-400"
                                  : "border-neutral-700"
@@ -350,7 +352,7 @@ const Register = () => {
                   {/* Submit */}
                   <motion.button
                      type="submit"
-                     className="text-light h-11 w-full rounded-lg bg-yellow-600 text-base font-medium shadow-md transition hover:bg-yellow-500 disabled:opacity-50"
+                     className="text-light max-xs:mt-1 max-xs:text-sm h-11 w-full rounded-lg bg-yellow-600 text-base font-medium shadow-md transition hover:bg-yellow-500 disabled:opacity-50"
                      disabled={isLoading}
                   >
                      {isLoading ? "Creating account..." : "Sign up"}
@@ -359,7 +361,7 @@ const Register = () => {
             </div>
 
             {/* Footer */}
-            <div className="p-6 text-center text-sm text-neutral-400">
+            <div className="max-xs:text-xs p-6 text-center text-sm text-neutral-400 sm:p-8">
                Already have an account?{" "}
                <Link
                   to="/login"

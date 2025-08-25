@@ -3,7 +3,7 @@ import FundCard from "../components/FundCard";
 import { toTitleCase } from "../lib/toTitleCase";
 import BackButton from "../components/BackButtonOrLink";
 import { AnimatePresence, motion } from "framer-motion";
-import { Loader2, Search, X } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { searchFilter } from "../lib/searchFilter";
 import EditModal from "../components/EditModal";
 import { useFundsContext } from "../context/FundContext";
@@ -130,7 +130,7 @@ const EditFunds = () => {
                               {/* Search Icon */}
                               <motion.button
                                  onClick={() => setShowSearch(true)}
-                                 className="text-light mr-1 ml-3 rounded-md bg-neutral-800 p-2 hover:bg-neutral-700"
+                                 className="text-light ml-3 rounded-md bg-neutral-800 p-2 hover:bg-neutral-700"
                                  whileHover={{ scale: 1.08 }}
                                  whileTap={{ scale: 0.95 }}
                               >
@@ -165,7 +165,7 @@ const EditFunds = () => {
                                     setShowSearch(false);
                                     setQuery("");
                                  }}
-                                 className="text-light mr-1 rounded-md bg-neutral-800 p-2 hover:bg-neutral-700"
+                                 className="text-light rounded-md bg-neutral-800 p-2 hover:bg-neutral-700"
                                  whileHover={{ scale: 1.08 }}
                                  whileTap={{ scale: 0.95 }}
                               >
@@ -203,9 +203,7 @@ const EditFunds = () => {
                )}
 
                {/* Loading Spinner */}
-               {loading && (
-                  <CircularLoader label="Loading Funds..." />
-               )}
+               {loading && <CircularLoader label="Loading Funds..." />}
 
                {!loading && filteredFunds.length === 0 && (
                   <p className="mt-4 text-center text-sm text-neutral-400">

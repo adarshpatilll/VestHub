@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 
 const Layout = () => {
 	return (
-		<div className="h-screen flex flex-col bg-dark text-light">
+		<div className="relative h-screen max-h-screen w-screen max-w-screen flex flex-col bg-dark text-light">
 			<Navbar />
 
 			{/* Add padding-top & padding-bottom equal to nav + footer heights */}

@@ -12,7 +12,7 @@ const links = [
 ];
 
 const Navbar = () => {
-   const { user, logoutUser, getUserDetails } = useAuthContext();
+   const { logoutUser, getUserDetails } = useAuthContext();
 
    const [userDetails, setUserDetails] = useState(null);
 
@@ -28,7 +28,9 @@ const Navbar = () => {
    const handleLogout = async () => {
       try {
          await logoutUser();
-         toast.success(`Goodbye, ${userDetails?.name || "Investor"}!`, { duration: 3000 });
+         toast.success(`Goodbye, ${userDetails?.name || "Investor"}!`, {
+            duration: 3000,
+         });
       } catch (error) {
          toast.error("Failed to log out. Try again.");
       }
@@ -39,7 +41,7 @@ const Navbar = () => {
          initial={{ y: -60, opacity: 0 }}
          animate={{ y: 0, opacity: 1 }}
          transition={{ duration: 0.5, ease: "easeOut" }}
-         className="bg-dark text-light fixed top-0 left-0 z-50 flex h-14 w-full items-center justify-between border-b border-b-neutral-600 px-5 py-1"
+         className="bg-dark text-light fixed top-0 left-0 right-0 z-40 flex h-14 w-full items-center justify-between border-b border-b-neutral-600 px-5 py-1"
       >
          {/* Logo */}
          <motion.div

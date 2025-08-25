@@ -214,7 +214,7 @@ const Account = () => {
 
    return (
       <>
-         <div className="bg-dark flex min-h-full justify-center p-4">
+         <div className="bg-dark flex min-h-[calc(100vh-152px)] justify-center p-4 md:min-h-[calc(100vh-88px)]">
             <motion.div
                initial={{ opacity: 0, y: 40 }}
                animate={{ opacity: 1, y: 0 }}
@@ -223,10 +223,10 @@ const Account = () => {
             >
                {/* Profile Section */}
                <motion.div
-                  initial={{ opacity: 0, y: -20 }}
+                  initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.2 }}
-                  className="flex flex-col items-center gap-3 sm:flex-row sm:justify-between sm:gap-5"
+                  className="flex flex-col items-center gap-3 md:flex-row md:justify-between md:gap-5"
                >
                   {/* Profile Image */}
                   {photoURL ? (
@@ -238,41 +238,46 @@ const Account = () => {
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ duration: 0.5, delay: 0.3 }}
                         whileHover={{ scale: 1.05 }}
-                        className="h-16 w-16 rounded-full border-2 border-yellow-500 object-cover shadow-md sm:h-20 sm:w-20"
+                        className="h-16 w-16 rounded-full border-2 border-yellow-500 object-cover shadow-md md:h-20 md:w-20"
                      />
                   ) : (
                      <motion.div
-                        initial={{ scale: 0.8, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{ duration: 0.5, delay: 0.3 }}
-                        whileHover={{ scale: 1.05 }}
-                        className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-yellow-500 bg-neutral-800 shadow-md sm:h-18 sm:w-20"
+                        // initial={{ scale: 0.8, opacity: 0 }}
+                        // animate={{ scale: 1, opacity: 1 }}
+                        // transition={{ duration: 0.5, delay: 0.3 }}
+                        // whileHover={{ scale: 1.05 }}
+                        className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-yellow-500 bg-neutral-800 shadow-md md:h-18 md:w-20"
                      >
                         {name !== "Anonymous" ? (
-                           <span className="text-2xl font-bold text-yellow-500 sm:text-3xl">
+                           <span className="text-2xl font-bold text-yellow-500 md:text-3xl">
                               {initials}
                            </span>
                         ) : (
-                           <User className="h-10 w-10 text-yellow-500 sm:h-12 sm:w-12" />
+                           <User className="h-10 w-10 text-yellow-500 md:h-12 md:w-12" />
                         )}
                      </motion.div>
                   )}
 
                   {/* Name + Email */}
-                  <div className="flex w-full min-w-0 flex-col items-center sm:items-start">
-                     <h2 className="text-light truncate text-base font-bold sm:text-xl">
+                  <div className="flex w-full min-w-0 flex-col items-center md:items-start">
+                     <h2 className="text-light truncate text-base font-bold md:text-xl">
                         {name}
                      </h2>
-                     <p className="max-w-full truncate text-sm text-neutral-400 sm:text-base">
+                     <p className="max-w-full truncate text-sm text-neutral-400 md:text-base">
                         {email}
                      </p>
                   </div>
                </motion.div>
 
-               <Divider className="my-5 sm:my-6" />
+               <Divider className="my-5 md:my-6" />
 
                {/* Switches */}
-               <div className="space-y-4">
+               <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  className="space-y-4"
+               >
                   <div className="flex items-center justify-between gap-2">
                      <p className="text-sm text-neutral-400">
                         Turn on edit mode to modify or delete funds
@@ -292,15 +297,15 @@ const Account = () => {
                         defaultChecked={canShare}
                      />
                   </div>
-               </div>
+               </motion.div>
 
-               <Divider className="my-5 sm:my-6" />
+               <Divider className="my-5 md:my-6" />
 
                {/* Shared Recipients */}
                <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
                   className="flex flex-col gap-3"
                >
                   <h3 className="text-light text-base font-semibold md:text-lg">
@@ -378,13 +383,13 @@ const Account = () => {
                   )}
                </motion.div>
 
-               <Divider className="my-5 sm:my-6" />
+               <Divider className="my-5 md:my-6" />
 
                {/* Share Funds Section */}
                <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
+                  transition={{ duration: 0.5, delay: 0.5 }}
                   className="flex flex-col gap-3"
                >
                   <h3 className="text-light text-base font-semibold sm:text-lg">
@@ -423,17 +428,22 @@ const Account = () => {
                   </motion.button>
                </motion.div>
 
-               <Divider className="my-5 sm:my-6" />
+               <Divider className="my-5 md:my-6" />
 
                {/* Back / Home */}
-               <div className="mt-6 text-center text-sm text-neutral-400">
+               <motion.div
+                  className="text-center text-sm text-neutral-400"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.6}}
+               >
                   <Link
                      to="/"
                      className="font-medium text-yellow-400 hover:text-yellow-300"
                   >
                      <span className="text-light/80">Go to</span> Home
                   </Link>
-               </div>
+               </motion.div>
             </motion.div>
          </div>
 

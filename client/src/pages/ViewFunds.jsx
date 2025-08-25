@@ -35,7 +35,7 @@ const ViewFunds = () => {
          <div className="mx-auto max-w-5xl">
             <div className="pt-18">
                {/* fixed Header + Search */}
-               <div className="bg-dark fixed top-14 right-0 left-0 z-30 flex flex-col gap-3 px-6 py-2 md:px-6">
+               <div className="bg-dark fixed top-14 right-0 left-0 z-30 flex flex-col gap-3 px-6 py-2">
                   {/* Header */}
                   <motion.div
                      className="flex items-center justify-between"
@@ -124,7 +124,7 @@ const ViewFunds = () => {
                               {/* Search Icon */}
                               <motion.button
                                  onClick={() => setShowSearch(true)}
-                                 className="text-light mr-1 ml-3 rounded-md bg-neutral-800 p-2 hover:bg-neutral-700"
+                                 className="text-light ml-3 rounded-md bg-neutral-800 p-2 hover:bg-neutral-700"
                                  whileHover={{ scale: 1.08 }}
                                  whileTap={{ scale: 0.95 }}
                               >
@@ -159,7 +159,7 @@ const ViewFunds = () => {
                                     setShowSearch(false);
                                     setQuery("");
                                  }}
-                                 className="text-light mr-1 rounded-md bg-neutral-800 p-2 hover:bg-neutral-700"
+                                 className="text-light rounded-md bg-neutral-800 p-2 hover:bg-neutral-700"
                                  whileHover={{ scale: 1.08 }}
                                  whileTap={{ scale: 0.95 }}
                               >

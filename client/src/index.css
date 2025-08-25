@@ -9,6 +9,9 @@ body {
 @theme {
    --color-light: oklch(97% 0 0);
    --color-dark: oklch(20.904% 0.00002 271.152);
+
+   /* iPhone basic size */
+   --breakpoint-xs: 480px;
 }
 
 /* Scrollbar width */

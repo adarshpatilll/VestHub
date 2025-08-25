@@ -159,7 +159,7 @@ const SharedFunds = () => {
                               {/* Search Icon */}
                               <motion.button
                                  onClick={() => setShowSearch(true)}
-                                 className="text-light mr-1 ml-3 rounded-md bg-neutral-800 p-2 hover:bg-neutral-700"
+                                 className="text-light ml-3 rounded-md bg-neutral-800 p-2 hover:bg-neutral-700"
                                  whileHover={{ scale: 1.08 }}
                                  whileTap={{ scale: 0.95 }}
                               >
@@ -194,7 +194,7 @@ const SharedFunds = () => {
                                     setShowSearch(false);
                                     setQuery("");
                                  }}
-                                 className="text-light mr-1 rounded-md bg-neutral-800 p-2 hover:bg-neutral-700"
+                                 className="text-light rounded-md bg-neutral-800 p-2 hover:bg-neutral-700"
                                  whileHover={{ scale: 1.08 }}
                                  whileTap={{ scale: 0.95 }}
                               >

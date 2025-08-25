@@ -69,27 +69,27 @@ const Login = () => {
    };
 
    return (
-      <div className="flex min-h-screen items-center justify-center bg-neutral-950 p-4 sm:p-6 lg:p-8">
+      <div className="flex min-h-screen items-center justify-center bg-neutral-950 p-6 sm:p-8 lg:p-10">
          <motion.div
-            className="bg-dark w-full max-w-sm overflow-hidden rounded-2xl border border-neutral-700 shadow-2xl sm:max-w-md md:max-w-lg"
+            className="bg-dark max-xs:max-w-xs w-full max-w-sm overflow-hidden rounded-2xl border border-neutral-700 shadow-md shadow-neutral-900 sm:max-w-md md:max-w-lg"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
          >
             {/* Header */}
             <div className="space-y-2 p-6 text-center sm:p-8">
-               <h1 className="text-light text-2xl font-bold sm:text-3xl">
+               <h1 className="text-light max-xs:text-xl text-2xl font-bold sm:text-3xl">
                   Welcome to VestHub
                </h1>
-               <p className="text-light/60 text-sm sm:text-base">
+               <p className="text-light/60 max-xs:text-xs text-sm sm:text-base">
                   Sign in to your account to continue
                </p>
             </div>
 
-            {/* Google Login */}
-            <div className="space-y-5 px-6 sm:px-8">
+            <div className="max-xs:gap-3 flex flex-col gap-4 px-6 sm:gap-5 sm:px-8">
+               {/* Google Login */}
                <button
-                  className="text-light flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-neutral-700 bg-neutral-800 font-medium transition hover:bg-neutral-700"
+                  className="text-light max-xs:text-sm flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-neutral-700 bg-neutral-800 text-base font-medium transition hover:bg-neutral-700"
                   onClick={loginWithGoogle}
                >
                   <FcGoogle size={20} />
@@ -101,7 +101,7 @@ const Login = () => {
                   <div className="absolute inset-0 flex items-center">
                      <div className="w-full border-t border-neutral-700"></div>
                   </div>
-                  <div className="relative flex justify-center text-xs uppercase">
+                  <div className="max-xs:text-[11px] relative flex justify-center text-xs uppercase">
                      <span className="bg-dark text-light/30 px-2">
                         or continue with
                      </span>
@@ -111,7 +111,7 @@ const Login = () => {
                {/* Form */}
                <motion.form
                   onSubmit={handleSubmit}
-                  className="space-y-5"
+                  className="max-xs:gap-3 flex flex-col gap-4 sm:gap-5"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
@@ -124,6 +124,7 @@ const Login = () => {
                      >
                         Email
                      </label>
+
                      <div className="relative">
                         <Mail className="text-light/40 absolute top-3.5 left-3 h-4 w-4" />
                         <input
@@ -132,7 +133,7 @@ const Login = () => {
                            placeholder="Enter your email"
                            value={email}
                            onChange={(e) => setEmail(e.target.value)}
-                           className={`text-light placeholder-light/35 h-11 w-full rounded-lg border bg-neutral-800 pr-3 pl-10 focus:ring focus:ring-yellow-300 focus:outline-none ${
+                           className={`text-light max-xs:text-sm placeholder-light/35 h-11 w-full rounded-lg border bg-neutral-800 pr-3 pl-10 focus:ring focus:ring-yellow-300 focus:outline-none ${
                               errors.email
                                  ? "border-red-500 focus:ring-red-400"
                                  : "border-neutral-700"
@@ -172,7 +173,7 @@ const Login = () => {
                            placeholder="Enter your password"
                            value={password}
                            onChange={(e) => setPassword(e.target.value)}
-                           className={`text-light placeholder-light/35 h-11 w-full rounded-lg border bg-neutral-800 pr-10 pl-10 focus:ring focus:ring-yellow-300 focus:outline-none ${
+                           className={`text-light max-xs:text-sm placeholder-light/35 h-11 w-full rounded-lg border bg-neutral-800 pr-10 pl-10 focus:ring focus:ring-yellow-300 focus:outline-none ${
                               errors.password
                                  ? "border-red-500 focus:ring-red-400"
                                  : "border-neutral-700"
@@ -211,7 +212,7 @@ const Login = () => {
                   <div className="flex justify-end">
                      <Link
                         to="/reset-password"
-                        className="text-sm text-yellow-400 hover:text-yellow-300"
+                        className="max-xs:text-xs text-sm text-yellow-400 hover:text-yellow-300"
                      >
                         Forgot password?
                      </Link>
@@ -220,7 +221,7 @@ const Login = () => {
                   {/* Submit */}
                   <button
                      type="submit"
-                     className="text-light h-11 w-full rounded-lg bg-yellow-600 text-base font-medium shadow-md transition hover:bg-yellow-500 disabled:opacity-50"
+                     className="text-light max-xs:text-sm h-11 w-full rounded-lg bg-yellow-600 text-base font-medium shadow-md transition hover:bg-yellow-500 disabled:opacity-50"
                      disabled={isLoading}
                   >
                      {isLoading ? "Signing in..." : "Sign in"}
@@ -229,7 +230,12 @@ const Login = () => {
             </div>
 
             {/* Footer */}
-            <div className="p-6 text-center text-sm text-neutral-400 sm:p-8">
+            <motion.div
+               initial={{ opacity: 0, y: 20 }}
+               animate={{ opacity: 1, y: 0 }}
+               transition={{ delay: 0.4 }}
+               className="max-xs:text-xs p-6 text-center text-sm text-neutral-400 sm:p-8"
+            >
                Don't have an account?{" "}
                <Link
                   to="/register"
@@ -237,7 +243,7 @@ const Login = () => {
                >
                   Sign up
                </Link>
-            </div>
+            </motion.div>
          </motion.div>
       </div>
    );
