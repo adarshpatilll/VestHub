@@ -214,7 +214,7 @@ const Account = () => {
 
    return (
       <>
-         <div className="bg-dark flex min-h-[calc(100vh-152px)] justify-center p-4 md:min-h-[calc(100vh-88px)]">
+         <div className="bg-dark flex min-h-[calc(100vh-152px)] justify-center py-4 md:min-h-[calc(100vh-88px)]">
             <motion.div
                initial={{ opacity: 0, y: 40 }}
                animate={{ opacity: 1, y: 0 }}
