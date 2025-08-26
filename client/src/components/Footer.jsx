@@ -33,7 +33,7 @@ const Footer = () => {
          initial={{ y: 60, opacity: 0 }}
          animate={{ y: 0, opacity: 1 }}
          transition={{ duration: 0.5, ease: "easeOut" }}
-         className={`bg-dark text-light fixed right-0 bottom-0 left-0 z-40 flex h-16 w-full items-center justify-between gap-2 border-t border-t-neutral-600 px-2 text-sm sm:flex md:hidden ${!isIOSPWA ? "h-[5.2rem] pb-5" : ""}`}
+         className={`bg-dark text-light fixed right-0 bottom-0 left-0 z-40 flex h-16 w-full items-center justify-between gap-2 border-t border-t-neutral-600 px-2 text-sm sm:flex md:hidden ${isIOSPWA ? "h-[5.2rem] pb-5" : ""}`}
       >
          {/* links */}
          {links.map(({ id, to, icon, label }) => {
