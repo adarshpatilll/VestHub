@@ -5,5 +5,5 @@ export const formatSchemeName = (name = "") => {
 	words = words.map(
 		(word, index) => word + (index < words.length - 1 ? " - " : "")
 	);
-	return toTitleCase(words.join(""));
+	return toTitleCase(words.join("")); // Output Example: "My Scheme - Direct - Growth"
 };

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { getCalculations } from "../lib/getCalculations";
 import { toast } from "sonner";
 import SearchSelect from "../components/SearchSelect";
@@ -13,7 +13,7 @@ const AddFund = () => {
    const [loadingSchemes, setLoadingSchemes] = useState(true);
    const [loadingNav, setLoadingNav] = useState(false);
 
-   const { add, loading, error, categories } = useFundsContext();
+   const { add, loading, categories } = useFundsContext();
 
    const [fundDetails, setFundDetails] = useState({
       folioNumber: "",
@@ -26,8 +26,10 @@ const AddFund = () => {
       currentAmount: "",
       pnl: "",
       returns: "",
+      amfiCode: "",
    });
 
+   // Fetch all schemes on mount
    useEffect(() => {
       (async () => {
          try {
@@ -44,21 +46,40 @@ const AddFund = () => {
       })();
    }, []);
 
-   useEffect(() => {
-      if (fundDetails.schemeName) {
-         setLoadingNav(true);
-         const fetchedNav = schemes.find(
-            (s) => s.schemeName === fundDetails.schemeName,
-         );
-         setFundDetails((prev) => ({
-            ...prev,
-            nav: fetchedNav?.latestNav || "",
-            navDate: fetchedNav?.navDate || "",
-         }));
-         setLoadingNav(false);
-      }
+   // Find matched scheme whenever schemeName or amfiCode changes
+   const matchedFund = useMemo(() => {
+      if (!fundDetails.schemeName) return null;
+
+      // Try schemeName + amfiCode
+      return (
+         schemes.find(
+            (data) =>
+               data.schemeName === fundDetails.schemeName &&
+               data.amfiCode === fundDetails.amfiCode,
+         ) ||
+         // fallback to amfiCode only
+         schemes.find((data) => data.amfiCode === fundDetails.amfiCode) ||
+         null
+      );
    }, [fundDetails.schemeName]);
 
+   // Set NAV details when matched fund is found
+   useEffect(() => {
+      if (!matchedFund) return;
+
+      setLoadingNav(true);
+
+      setFundDetails((prev) => ({
+         ...prev,
+         nav: matchedFund.latestNav || "",
+         navDate: matchedFund.navDate || "",
+         amfiCode: matchedFund.amfiCode || "",
+      }));
+
+      setLoadingNav(false);
+   }, [matchedFund]);
+
+   // Calculate derived values
    useEffect(() => {
       if (fundDetails.units && fundDetails.nav && fundDetails.investedAmount) {
          const { current, pnl, returns } = getCalculations(
@@ -97,6 +118,7 @@ const AddFund = () => {
             nav: fundDetails.nav,
             navDate: fundDetails.navDate,
             category: fundDetails.category,
+            amfiCode: fundDetails.amfiCode,
          }),
          {
             loading: "Adding fund...",
@@ -112,6 +134,7 @@ const AddFund = () => {
                   currentAmount: "",
                   pnl: "",
                   returns: "",
+                  amfiCode: "",
                });
                return "Fund added successfully";
             },
@@ -184,11 +207,17 @@ const AddFund = () => {
                      value={fundDetails.schemeName}
                      defaultValue="Select scheme"
                      onChange={(val) =>
-                        setFundDetails((prev) => ({ ...prev, schemeName: val }))
+                        setFundDetails((prev) => ({
+                           ...prev,
+                           schemeName: val.value,
+                           amfiCode: val.amfiCode,
+                        }))
                      }
+                     forOnChangeReturnsObject={true}
                      options={schemes.map((s) => ({
                         label: s.schemeName,
                         value: s.schemeName,
+                        amfiCode: s.amfiCode,
                      }))}
                   />
                </div>

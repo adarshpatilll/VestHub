@@ -546,13 +546,23 @@ export const fetchAllNAVs = async () => {
       const navMap = {};
 
       json.data.forEach((item) => {
+         // Add by scheme name (lowercase)
          navMap[item.schemeName.toLowerCase()] = {
             latestNav: item.latestNav,
             navDate: item.navDate,
          };
+
+         // Add by AMFI code if available
+         if (item.amfiCode) {
+            navMap[item.amfiCode] = {
+               latestNav: item.latestNav,
+               navDate: item.navDate,
+               schemeName: item.schemeName,
+            };
+         }
       });
 
-      return navMap; // { "xyz fund": { latestNav: 123, navDate: "12 12 1234" }, ... }
+      return navMap; // { "xyz fund": { latestNav: 123, navDate: "12 12 1234" }, "12345": { latestNav: 123, navDate: "12 12 1234" }, ... }
    } catch (err) {
       console.error("Error fetching NAVs:", err);
       return {};
@@ -680,6 +690,7 @@ export const editFund = async (fundId, updatedData) => {
    }
 };
 
+// Delete fund
 export const deleteFund = async (fundId) => {
    const user = auth.currentUser;
    if (!user) throw new Error("No user is logged in");

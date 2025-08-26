@@ -49,7 +49,11 @@ export default function SearchSelect({
                   value ? "text-light" : "text-light/50"
                }`}
             >
-               {value ? value : defaultValue ? defaultValue : "Select an option"}
+               {value
+                  ? value
+                  : defaultValue
+                    ? defaultValue
+                    : "Select an option"}
             </span>
             <IoIosArrowDown
                className={`ml-2 shrink-0 transition-transform ${

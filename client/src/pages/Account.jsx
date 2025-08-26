@@ -97,7 +97,7 @@ const Account = () => {
             loading: "Updating shared funds...",
             success: (updatedCount) => {
                if (updatedCount > 0) {
-                  return `Updated ${updatedCount} shared funds successfully!`;
+                  return `${updatedCount} shared ${updatedCount === 1 ? "fund" : "funds"} updated successfully!`;
                } else {
                   return "No funds needed updating.";
                }
@@ -436,7 +436,7 @@ const Account = () => {
                   className="text-center text-sm text-neutral-400"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.6}}
+                  transition={{ duration: 0.5, delay: 0.6 }}
                >
                   <Link
                      to="/"
