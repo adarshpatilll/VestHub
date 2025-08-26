@@ -61,7 +61,7 @@ const EditModal = ({
    // Auto update calculations
    useEffect(() => {
       if (fundDetails.units && fundDetails.nav && fundDetails.investedAmount) {
-         const { current, pnl, returns } = getCalculations(
+         const { currentAmount, pnl, returns } = getCalculations(
             fundDetails.units,
             fundDetails.nav,
             fundDetails.investedAmount,
@@ -69,7 +69,7 @@ const EditModal = ({
 
          setFundDetails((prev) => ({
             ...prev,
-            currentAmount: current,
+            currentAmount: currentAmount,
             pnl,
             returns,
          }));

@@ -12,10 +12,10 @@ import {
    addFund,
    editFund,
    deleteFund,
-   fetchAllNAVs,
 } from "../firebase/data";
 import { serverTimestamp } from "firebase/firestore";
 import { useAuthContext } from "./AuthContext";
+import { updateUserFundsWithNAV } from "../lib/updateUserFundsWithNAV";
 
 const FundsContext = createContext();
 
@@ -31,134 +31,13 @@ export const FundsProvider = ({ children }) => {
 
    const { user } = useAuthContext();
 
-   // --- Update NAVs for all funds ---
-   const updateUserFundsWithNAV = useCallback(
-      async (fundList, saveToFirestore = false, batchSize = 30) => {
-         if (!fundList.length) return fundList;
-
-         try {
-            const navMap = await fetchAllNAVs();
-
-            // Identify funds that need NAV update (no updatedAt or older than latest NAV date)
-            const fundsToUpdate = fundList.filter((fund) => {
-               if (!fund.updatedAt) return true;
-
-               // Find the latest NAV date for the fund
-               const latestNavDate =
-                  navMap[fund.schemeName.toLowerCase()]?.navDate ===
-                  navMap[fund.amfiCode]?.navDate
-                     ? navMap[fund.schemeName.toLowerCase()]?.navDate
-                     : navMap[fund.amfiCode]?.navDate;
-
-               // Check if the fund's navDate is older than the latest NAV date
-               if (latestNavDate && fund.navDate) {
-                  return fund.navDate < latestNavDate;
-               }
-
-               return false;
-            });
-
-            // Map the updated NAV data to the corresponding funds
-            const updatedFunds = fundList.map((fund) => {
-               let navData;
-               let isSchemeNameChange = false;
-
-               // Check if both schemeName and amfiCode have NAV data & are equal
-               if (
-                  navMap[fund.schemeName.toLowerCase()]?.latestNav ===
-                  navMap[fund.amfiCode]?.latestNav
-               ) {
-                  // If both are equal, use schemeName
-                  navData = navMap[fund.schemeName.toLowerCase()];
-               } else {
-                  // If not equal, use amfiCode and mark schemeName as changed
-                  navData = navMap[fund.amfiCode];
-                  isSchemeNameChange = true;
-               }
-
-               // If no NAV data is found, return the original fund
-               if (!navData) return fund;
-
-               // If the fund needs to be updated, return the updated fund
-               if (fundsToUpdate.includes(fund)) {
-                  return {
-                     ...fund,
-                     nav: navData.latestNav,
-                     navDate: navData.navDate,
-                     schemeName: isSchemeNameChange // If schemeName changed, use new name
-                        ? navData.schemeName
-                        : fund.schemeName,
-                     updatedAt: new Date(),
-                  };
-               }
-
-               // If the fund doesn't need to be updated, return the original fund
-               return fund;
-            });
-
-            // Save updated funds to Firestore
-            if (saveToFirestore && fundsToUpdate.length) {
-               // Create batches of funds to update for Firestore to avoid exceeding limits
-               for (let i = 0; i < fundsToUpdate.length; i += batchSize) {
-                  // Create a batch of funds to update
-                  const batch = fundsToUpdate.slice(i, i + batchSize);
-
-                  // Update each fund in the batch
-                  await Promise.all(
-                     // Map each fund to its update promise
-                     batch.map((fund) => {
-                        let navData;
-                        let isSchemeNameChange = false;
-
-                        // Check if both schemeName and amfiCode have NAV data & are equal
-                        if (
-                           navMap[fund.schemeName.toLowerCase()]?.latestNav ===
-                           navMap[fund.amfiCode]?.latestNav
-                        ) {
-                           // If both are equal, use schemeName
-                           navData = navMap[fund.schemeName.toLowerCase()];
-                        } else {
-                           // If not equal, use amfiCode and mark schemeName as changed
-                           navData = navMap[fund.amfiCode];
-                           isSchemeNameChange = true;
-                        }
-
-                        // If no NAV data is found, return the original fund
-                        if (!navData) return fund;
-
-                        // If the fund needs to be updated, return the updated fund
-                        return editFund(fund.id, {
-                           ...fund,
-                           nav: navData.latestNav,
-                           navDate: navData.navDate,
-                           schemeName: isSchemeNameChange
-                              ? navData.schemeName
-                              : fund.schemeName,
-                           updatedAt: new Date(),
-                        });
-                     }),
-                  );
-               }
-            }
-
-            // If no funds were updated, return the original list
-            return updatedFunds;
-         } catch (err) {
-            setError(err.message);
-            // If an error occurs, return the original fund list
-            return fundList;
-         }
-      },
-      [],
-   );
-
    const fetchFunds = async () => {
       setFundsLoading(true);
       try {
-         // Fetch funds from Firestore
          const data = await getFunds();
-         // Enrich funds with NAV data
-         const enrichedFunds = await updateUserFundsWithNAV(data, true);
+         const enrichedFunds = await updateUserFundsWithNAV(data, {
+            saveToFirestore: true,
+         });
          setFunds(enrichedFunds);
       } catch (err) {
          setError(err.message);
@@ -166,6 +45,7 @@ export const FundsProvider = ({ children }) => {
          setFundsLoading(false);
       }
    };
+
    const fetchCategories = async () => {
       setCategoriesLoading(true);
       try {
@@ -327,7 +207,6 @@ export const FundsProvider = ({ children }) => {
    const refreshNav = useCallback(async () => {
       if (!funds.length) return;
 
-      // Update only funds that need refreshing (older than 1 day) and save to Firestore
       const enriched = await updateUserFundsWithNAV(funds, true); // true = saveToFirestore
 
       setFunds(enriched);

@@ -82,14 +82,14 @@ const AddFund = () => {
    // Calculate derived values
    useEffect(() => {
       if (fundDetails.units && fundDetails.nav && fundDetails.investedAmount) {
-         const { current, pnl, returns } = getCalculations(
+         const { currentAmount, pnl, returns } = getCalculations(
             fundDetails.units,
             fundDetails.nav,
             fundDetails.investedAmount,
          );
          setFundDetails((prev) => ({
             ...prev,
-            currentAmount: current,
+            currentAmount: currentAmount,
             pnl,
             returns,
          }));
