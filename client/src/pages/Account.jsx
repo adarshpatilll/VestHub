@@ -397,7 +397,7 @@ const Account = () => {
                   </h3>
 
                   <SearchSelect
-                     label="Select a user"
+                     label="Investor's name"
                      options={users.filter(
                         (u) =>
                            !sharedRecipients
@@ -410,6 +410,7 @@ const Account = () => {
                                 ?.label
                            : ""
                      }
+                     defaultValue="Select investor"
                      onChange={(opt) => setSelectedUser(opt)}
                      forOnChangeReturnsObject={true}
                      autoFocus={false}

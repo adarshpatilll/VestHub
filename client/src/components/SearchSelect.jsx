@@ -6,9 +6,10 @@ export default function SearchSelect({
    label,
    options,
    value,
+   defaultValue,
    onChange,
    allowCreate,
-   autoFocus = "true",
+   autoFocus = true,
    forOnChangeReturnsObject = false,
 }) {
    const [open, setOpen] = useState(false);
@@ -48,7 +49,7 @@ export default function SearchSelect({
                   value ? "text-light" : "text-light/50"
                }`}
             >
-               {value ? value : "Select scheme"}
+               {value ? value : defaultValue ? defaultValue : "Select an option"}
             </span>
             <IoIosArrowDown
                className={`ml-2 shrink-0 transition-transform ${

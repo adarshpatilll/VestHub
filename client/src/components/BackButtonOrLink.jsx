@@ -1,23 +1,15 @@
 import { IoIosArrowBack } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const BackButtonOrLink = ({ setViewMode, isLink = false, to = "/funds", className }) => {
+const BackButtonOrLink = ({ isLink = false, className }) => {
+   const navigate = useNavigate();
+
    return (
       <>
-         {isLink ? (
-            <Link
-               to={to}
-               className={`group flex items-center justify-center rounded-md py-0.5 text-sm text-yellow-400 ${className}`}
-            >
-               {
-                  <IoIosArrowBack className="transition-transform group-hover:-translate-x-1" />
-               }{" "}
-               Back
-            </Link>
-         ) : (
+         {isLink && (
             <button
-               onClick={() => setViewMode("menu")}
-               className="group flex items-center justify-center rounded-md px-3 py-0.5 text-sm text-yellow-400"
+               onClick={() => navigate(-1)}
+               className={`group flex items-center justify-center rounded-md py-0.5 text-sm text-yellow-400 ${className}`}
             >
                {
                   <IoIosArrowBack className="transition-transform group-hover:-translate-x-1" />

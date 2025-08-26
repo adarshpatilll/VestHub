@@ -90,7 +90,11 @@ const SharedSenders = () => {
                {senders.map((sender) => (
                   <motion.button
                      key={sender.senderId}
-                     onClick={() => navigate(`${sender.senderId}`)}
+                     onClick={() =>
+                        navigate("details", {
+                           state: { senderId: sender.senderId },
+                        })
+                     }
                      className="flex items-center gap-3 rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-3 text-left"
                      whileHover={{ scale: 1.02 }}
                      whileTap={{ scale: 0.98 }}

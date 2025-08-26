@@ -4,20 +4,21 @@ import { useEffect, useState } from "react";
 
 const AppContent = () => {
    const location = useLocation();
-
    const [path, setPath] = useState(location.pathname);
 
    useEffect(() => {
       setPath(location.pathname);
    }, [location.pathname]);
 
-   const bgClass =
-      path === "/login" ||
-      path === "/register" ||
-      path === "/reset-password" ||
-      path === "/new-password"
-         ? "bg-neutral-950"
-         : "bg-dark";
+   // Paths with a different background (like login/register/reset)
+   const darkBgPaths = [
+      "/login",
+      "/register",
+      "/reset-password",
+      "/new-password",
+   ];
+
+   const bgClass = darkBgPaths.includes(path) ? "bg-neutral-950" : "bg-dark";
 
    return (
       <div className={`${bgClass}`}>

@@ -22,6 +22,7 @@ import PublicRoute from "./PublicRoute";
 import ProtectedRoute from "./ProtectedRoute";
 import SharedFunds from "../pages/SharedFunds";
 import SharedSenders from "../pages/SharedSenders";
+import NotFound from "../pages/NotFound";
 
 export const router = createBrowserRouter([
    // Public routes
@@ -153,7 +154,7 @@ export const router = createBrowserRouter([
                               ),
                            },
                            {
-                              path: "shared-funds/:senderId",
+                              path: "shared-funds/details",
                               element: (
                                  <>
                                     <Seo
@@ -183,6 +184,12 @@ export const router = createBrowserRouter([
             ],
          },
       ],
+   },
+
+   // Not Found Routes
+   {
+      path: "*",
+      element: <NotFound />,
    },
 ]);
 

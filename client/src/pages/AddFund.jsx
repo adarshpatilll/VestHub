@@ -155,7 +155,7 @@ const AddFund = () => {
                transition={{ delay: 0.2 }}
             >
                <h2 className="text-lg font-semibold">Add Funds</h2>
-               <BackButtonOrLink isLink={true} />
+               <BackButtonOrLink isLink />
             </motion.div>
 
             {/* Form */}
@@ -182,6 +182,7 @@ const AddFund = () => {
                   <SearchSelect
                      label="Scheme Name"
                      value={fundDetails.schemeName}
+                     defaultValue="Select scheme"
                      onChange={(val) =>
                         setFundDetails((prev) => ({ ...prev, schemeName: val }))
                      }
@@ -197,6 +198,7 @@ const AddFund = () => {
                   <SearchSelect
                      label="Category"
                      value={toTitleCase(fundDetails.category)}
+                     defaultValue="Select category"
                      allowCreate={true}
                      autoFocus={false}
                      onChange={(val) =>

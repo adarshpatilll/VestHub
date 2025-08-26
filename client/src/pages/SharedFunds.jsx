@@ -6,11 +6,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Search, X } from "lucide-react";
 import { searchFilter } from "../lib/searchFilter";
 import { getSharedFundsBySenderId } from "../firebase/data";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import CircularLoader from "./../components/CircularLoader";
 
 const SharedFunds = () => {
-   const { senderId } = useParams();
+   const location = useLocation();
+   const { senderId } = location.state || {};
 
    const [funds, setFunds] = useState([]);
    const [categories, setCategories] = useState([]);
@@ -24,6 +25,13 @@ const SharedFunds = () => {
    useEffect(() => {
       const fetchFunds = async () => {
          setLoading(true);
+
+         if (!senderId) {
+            console.error("No senderId provided in location state.");
+            setLoading(false);
+            return;
+         }
+
          try {
             const fetched = await getSharedFundsBySenderId(senderId);
 
@@ -79,7 +87,7 @@ const SharedFunds = () => {
                      transition={{ duration: 0.3 }}
                   >
                      <h2 className="text-lg font-semibold">Shared Funds</h2>
-                     <BackButton isLink to={`/funds/shared-funds`} />
+                     <BackButton isLink />
                   </motion.div>
 
                   {/* Search / Category Toggle */}

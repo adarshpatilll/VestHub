@@ -159,6 +159,7 @@ const EditModal = ({
                   <div className="col-span-2 flex flex-col md:col-span-1">
                      <SearchSelect
                         label="Scheme Name"
+                        defaultValue="Select scheme"
                         value={fundDetails.schemeName}
                         onChange={(val) =>
                            setFundDetails((prev) => ({
@@ -177,6 +178,7 @@ const EditModal = ({
                   <div className="col-span-2 flex flex-col md:col-span-1">
                      <SearchSelect
                         label="Category"
+                        defaultValue="Select category"
                         value={toTitleCase(fundDetails.category)}
                         allowCreate={true}
                         onChange={(val) =>
@@ -189,6 +191,7 @@ const EditModal = ({
                            label: toTitleCase(c.name),
                            value: c.name.toLowerCase(),
                         }))}
+                        autoFocus={false}
                      />
                   </div>
 
