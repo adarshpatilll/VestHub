@@ -1,17 +1,22 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { useAuthContext } from "./AuthContext";
+import { createContext, useContext, useState } from "react";
 
 const EditModeContext = createContext();
 
 export const EditModeProvider = ({ children }) => {
    // Get the edit mode state from localstorage
    const [isEditMode, setIsEditMode] = useState(() => {
-      const saved = localStorage.getItem("editMode");
+      const saved = localStorage.getItem(
+         atob("editMode") + btoa(btoa("editMode")),
+      );
       return saved === "true";
    });
 
+   // Save hashed edit mode state to localstorage
+
    const toggleEditMode = () => {
-      localStorage.setItem("editMode", !isEditMode);
+      const hashedEditMode = btoa(!isEditMode) + btoa(btoa(!isEditMode));
+
+      localStorage.setItem("editMode", hashedEditMode);
       setIsEditMode((prev) => !prev);
    };
 
