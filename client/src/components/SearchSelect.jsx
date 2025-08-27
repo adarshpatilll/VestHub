@@ -77,9 +77,9 @@ export default function SearchSelect({
 
                {/* Options */}
                <ul className="max-h-52 overflow-y-auto">
-                  {filtered.map((opt) => (
+                  {filtered.map((opt, idx) => (
                      <li
-                        key={opt.value}
+                        key={opt.value + idx}
                         className="cursor-pointer px-3 py-2 text-gray-200 transition-colors hover:bg-neutral-800"
                         onClick={() => {
                            onChange(forOnChangeReturnsObject ? opt : opt.value);

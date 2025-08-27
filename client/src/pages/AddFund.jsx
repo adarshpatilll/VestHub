@@ -7,6 +7,7 @@ import BackButtonOrLink from "../components/BackButtonOrLink";
 import { useFundsContext } from "../context/FundContext";
 import { motion } from "framer-motion";
 import CircularLoader from "../components/CircularLoader";
+import { formatSchemeName } from "../lib/formatSchemeName";
 
 const AddFund = () => {
    const [schemes, setSchemes] = useState([]);
@@ -204,19 +205,19 @@ const AddFund = () => {
                <div className="flex flex-col">
                   <SearchSelect
                      label="Scheme Name"
-                     value={fundDetails.schemeName}
+                     value={formatSchemeName(fundDetails.schemeName)}
                      defaultValue="Select scheme"
                      onChange={(val) =>
                         setFundDetails((prev) => ({
                            ...prev,
-                           schemeName: val.value,
+                           schemeName: formatSchemeName(val.value),
                            amfiCode: val.amfiCode,
                         }))
                      }
                      forOnChangeReturnsObject={true}
                      options={schemes.map((s) => ({
-                        label: s.schemeName,
-                        value: s.schemeName,
+                        label: formatSchemeName(s.schemeName),
+                        value: formatSchemeName(s.schemeName),
                         amfiCode: s.amfiCode,
                      }))}
                   />

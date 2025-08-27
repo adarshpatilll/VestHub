@@ -1,31 +1,53 @@
-import { useFundsContext } from "../context/FundContext";
-import { motion, useSpring, useTransform, useMotionValue } from "framer-motion";
-import { formatNumber } from "./../lib/formatNumber";
 import React from "react";
-import CircularLoader from "./../components/CircularLoader";
 import {
    PiggyBank,
    TrendingUp,
    Wallet,
    Percent,
    Briefcase,
-   Loader2,
 } from "lucide-react";
+import { motion, useSpring, useTransform, useMotionValue } from "framer-motion";
+import { formatNumber } from "./../lib/formatNumber";
+import CircularLoader from "./../components/CircularLoader";
+import { useFundsContext } from "../context/FundContext";
+import { useAuthContext } from "../context/AuthContext";
 
 const Home = () => {
    const { funds, loading } = useFundsContext();
+   const { user } = useAuthContext();
 
    // --- Aggregate calculations ---
-   const totals = funds.reduce(
-      (acc, fund) => {
-         acc.invested += Number(fund.investedAmount) || 0;
-         acc.current += Number(fund.currentAmount) || 0;
-         acc.pnl += Number(fund.pnl) || 0;
-         acc.count += 1;
-         return acc;
-      },
-      { invested: 0, current: 0, pnl: 0, count: 0 },
-   );
+
+   let totals;
+
+   if (user?.email === import.meta.env.VITE_USER_EMAIL_FOR_DATA_MANIPULATION) {
+      totals = funds.reduce(
+         (acc, fund) => {
+            acc.invested += Number(fund.investedAmount) || 0;
+            acc.count += 1;
+
+            // Exclude pnl & current only if category is "el & insurance (2022)"
+            if (fund.category !== "el & insurance (2022)") {
+               acc.current += Number(fund.currentAmount) || 0;
+            }
+
+            return acc;
+         },
+         { invested: 0, current: 0, count: 0 },
+      );
+   } else {
+      totals = funds.reduce(
+         (acc, fund) => {
+            acc.invested += Number(fund.investedAmount) || 0;
+            acc.current += Number(fund.currentAmount) || 0;
+            acc.count += 1;
+            return acc;
+         },
+         { invested: 0, current: 0, count: 0 },
+      );
+   }
+
+   totals.pnl = totals.current - totals.invested;
 
    const overallReturns =
       totals.invested > 0
@@ -139,7 +161,7 @@ const AnimatedNumber = ({ value, format }) => {
       motionValue.set(value);
    }, [value]);
 
-   return <motion.span>{rounded}</motion.span>;
+   return <motion.span className="tracking-wide">{rounded}</motion.span>;
 };
 
 // ✅ Updated SummaryCard with animation support

@@ -1,4 +1,5 @@
 import { fetchAllNAVs, editFund } from "../firebase/data";
+import { formatSchemeName } from "./formatSchemeName";
 import { getCalculations } from "./getCalculations";
 
 /**
@@ -70,8 +71,8 @@ export const updateUserFundsWithNAV = async (
             nav: navData.latestNav,
             navDate: navData.navDate,
             schemeName: navData.isSchemeNameChange
-               ? navData.schemeName
-               : fund.schemeName,
+               ? formatSchemeName(navData.schemeName)
+               : formatSchemeName(fund.schemeName),
             updatedAt: new Date(),
          };
       }
