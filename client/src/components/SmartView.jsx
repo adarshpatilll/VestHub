@@ -104,7 +104,7 @@ const SmartViewWindow = ({ funds, onClose, senderEmail }) => {
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
+            transition={{ duration: 0.15, ease: "easeInOut" }}
             className="mx-4 w-full max-w-sm rounded-2xl bg-neutral-900 p-5 shadow-xl md:max-w-xl"
          >
             {/* Header */}

@@ -250,7 +250,7 @@ const SharedFunds = () => {
                         setIsSmartViewWindowOpen(true);
                         setIsSmartViewBallVisible(false);
                      }}
-                     className="text-dark absolute right-5 bottom-20 cursor-pointer rounded-full bg-yellow-500 p-2.5 md:right-4 md:bottom-4"
+                     className="text-dark absolute right-4 bottom-20 cursor-pointer rounded-full bg-yellow-500 p-2.5 md:bottom-4"
                      animate={{
                         boxShadow: [
                            "0 0 3px rgba(250,204,21,0.8), 0 0 6px rgba(250,204,21,0.5)",
