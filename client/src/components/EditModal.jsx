@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const EditModal = ({
    fund,
+   schemes,
    onClose,
    edit,
    categories,
@@ -15,29 +16,10 @@ const EditModal = ({
    loading,
    setActiveCategory,
 }) => {
-   const [schemes, setSchemes] = useState([]);
-   const [loadingSchemes, setLoadingSchemes] = useState(true);
    const [loadingNav, setLoadingNav] = useState(false);
 
    // Local state to edit fund
    const [fundDetails, setFundDetails] = useState(fund);
-
-   // Fetch schemes
-   useEffect(() => {
-      (async () => {
-         try {
-            const res = await fetch(
-               "https://my-nav-rose.vercel.app/api/getList",
-            );
-            const json = await res.json();
-            setSchemes(json.data || []);
-         } catch (err) {
-            console.error("Failed to fetch schemes", err);
-         } finally {
-            setLoadingSchemes(false);
-         }
-      })();
-   }, []);
 
    // Update NAV when scheme changes
    useEffect(() => {
@@ -105,7 +87,7 @@ const EditModal = ({
       }
    };
 
-   if (loadingSchemes) {
+   if (loading) {
       return (
          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
             <div className="flex items-center justify-center gap-2 rounded bg-neutral-900 p-2">

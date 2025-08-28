@@ -17,7 +17,7 @@ const EditFunds = () => {
    const [isEditMode, setIsEditMode] = useState(false);
    const [selectedFund, setSelectedFund] = useState(null);
 
-   const { funds, categories, loading, edit, error } = useFundsContext();
+   const { funds, categories, loading, edit, error, schemesData } = useFundsContext();
 
    const { isEditMode: isEditSwitch } = useEditMode();
 
@@ -193,6 +193,7 @@ const EditFunds = () => {
                {isEditSwitch && isEditMode && (
                   <EditModal
                      fund={selectedFund}
+                     schemes={schemesData}
                      onClose={() => setIsEditMode(false)}
                      setActiveCategory={setActiveCategory}
                      edit={edit}

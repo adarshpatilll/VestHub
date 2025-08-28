@@ -22,6 +22,8 @@ const SharedFunds = () => {
    const [showSearch, setShowSearch] = useState(false);
 
    // --- Fetch Funds from Firestore ---
+   const backupSenderId = atob(localStorage.getItem("senderId"));
+
    useEffect(() => {
       const fetchFunds = async () => {
          setLoading(true);
@@ -33,7 +35,9 @@ const SharedFunds = () => {
          }
 
          try {
-            const fetched = await getSharedFundsBySenderId(senderId);
+            const fetched = await getSharedFundsBySenderId(
+               senderId || backupSenderId,
+            );
 
             setFunds(fetched);
 

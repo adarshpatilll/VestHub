@@ -13,7 +13,7 @@ import { useFundsContext } from "../context/FundContext";
 import { useAuthContext } from "../context/AuthContext";
 
 const Home = () => {
-   const { funds, loading } = useFundsContext();
+   const { funds = [], loading } = useFundsContext();
    const { user } = useAuthContext();
 
    // --- Aggregate calculations ---

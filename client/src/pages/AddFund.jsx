@@ -10,11 +10,10 @@ import CircularLoader from "../components/CircularLoader";
 import { formatSchemeName } from "../lib/formatSchemeName";
 
 const AddFund = () => {
-   const [schemes, setSchemes] = useState([]);
-   const [loadingSchemes, setLoadingSchemes] = useState(true);
+   // const [schemes, setSchemes] = useState([]);
    const [loadingNav, setLoadingNav] = useState(false);
 
-   const { add, loading, categories } = useFundsContext();
+   const { add, loading, categories, schemesData: schemes } = useFundsContext();
 
    const [fundDetails, setFundDetails] = useState({
       folioNumber: "",
@@ -29,23 +28,6 @@ const AddFund = () => {
       returns: "",
       amfiCode: "",
    });
-
-   // Fetch all schemes on mount
-   useEffect(() => {
-      (async () => {
-         try {
-            const res = await fetch(
-               "https://my-nav-rose.vercel.app/api/getList",
-            );
-            const json = await res.json();
-            setSchemes(json.data || []);
-         } catch (err) {
-            console.error("Failed to fetch schemes", err);
-         } finally {
-            setLoadingSchemes(false);
-         }
-      })();
-   }, []);
 
    // Find matched scheme whenever schemeName or amfiCode changes
    const matchedFund = useMemo(() => {
@@ -154,7 +136,7 @@ const AddFund = () => {
       }));
    };
 
-   if (loadingSchemes) {
+   if (loading) {
       return <CircularLoader label="Loading Schemes..." />;
    }
 

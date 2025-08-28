@@ -16,14 +16,20 @@ import {
 import { serverTimestamp } from "firebase/firestore";
 import { useAuthContext } from "./AuthContext";
 import { updateUserFundsWithNAV } from "../lib/updateUserFundsWithNAV";
+import { fetchAllDataFromApi } from "./../firebase/data";
 
 const FundsContext = createContext();
 
 export const FundsProvider = ({ children }) => {
    const [funds, setFunds] = useState([]);
+   const [sharedFunds, setSharedFunds] = useState({});
+
+   const [schemesData, setSchemesData] = useState([]);
    const [categories, setCategories] = useState([]);
 
    const [fundsLoading, setFundsLoading] = useState(true);
+   const [sharedFundsLoading, setSharedFundsLoading] = useState(true);
+   const [schemesDataLoading, setSchemesDataLoading] = useState(true);
    const [categoriesLoading, setCategoriesLoading] = useState(true);
    const [loading, setLoading] = useState(true);
 
@@ -35,14 +41,30 @@ export const FundsProvider = ({ children }) => {
       setFundsLoading(true);
       try {
          const data = await getFunds();
-         const enrichedFunds = await updateUserFundsWithNAV(data, {
+
+         const result = await updateUserFundsWithNAV(data, {
+            includeShared: true,
             saveToFirestore: true,
          });
-         setFunds(enrichedFunds);
+
+         setFunds(result.userFunds);
+         setSharedFunds(result.sharedFunds);
       } catch (err) {
          setError(err.message);
       } finally {
          setFundsLoading(false);
+      }
+   };
+
+   const fetchSchemeData = async () => {
+      setSchemesDataLoading(true);
+      try {
+         const data = await fetchAllDataFromApi();
+         setSchemesData(data);
+      } catch (err) {
+         setError(err.message);
+      } finally {
+         setSchemesDataLoading(false);
       }
    };
 
@@ -207,30 +229,36 @@ export const FundsProvider = ({ children }) => {
    const refreshNav = useCallback(async () => {
       if (!funds.length) return;
 
-      const enriched = await updateUserFundsWithNAV(funds, true); // true = saveToFirestore
+      const enriched = await updateUserFundsWithNAV(funds, {
+         saveToFirestore: true,
+      });
 
       setFunds(enriched);
    }, [funds, updateUserFundsWithNAV]);
 
-   // Fetch Self and categories on user login
+   // Fetch Self funds and categories and schemes also on user login
    useEffect(() => {
       if (user) {
          fetchFunds();
          fetchCategories();
+         fetchSchemeData();
       }
    }, [user]);
 
    // --- Set global loading ---
    useEffect(() => {
-      setLoading(fundsLoading || categoriesLoading);
-   }, [fundsLoading, categoriesLoading]);
+      setLoading(fundsLoading || categoriesLoading || schemesDataLoading);
+   }, [fundsLoading, categoriesLoading, schemesDataLoading]);
 
    return (
       <FundsContext.Provider
          value={{
             funds,
+            sharedFunds,
+            schemesData,
             categories,
             loading,
+            schemesDataLoading,
             error,
             add,
             edit,

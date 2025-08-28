@@ -105,6 +105,7 @@ export const loginUser = async (email, password) => {
 
 export const logoutUser = async () => {
    try {
+      localStorage.removeItem("senderId")
       await signOut(auth);
    } catch (error) {
       throw error;
@@ -311,28 +312,6 @@ export const getSendersWhoSharedWithMe = async () => {
    }
 };
 
-// Get recipients with whom the logged-in user has shared funds
-export const getRecipientsSharedByMe = async () => {
-   const user = auth.currentUser;
-   if (!user) throw new Error("No user is logged in");
-
-   try {
-      const userSnap = await getDoc(doc(db, "users", user.uid));
-      const sharedWith = userSnap.data()?.sharedWith || [];
-
-      const recipients = await Promise.all(
-         sharedWith.map(async (recipientId) => {
-            const recipientRef = doc(db, "users", recipientId);
-            const recipientSnap = await getDoc(recipientRef);
-            return { id: recipientId, ...recipientSnap.data() };
-         }),
-      );
-      return recipients;
-   } catch (err) {
-      throw err;
-   }
-};
-
 // Get all funds by sender Id
 export const getSharedFundsBySenderId = async (senderId) => {
    const user = auth.currentUser;
@@ -354,6 +333,59 @@ export const getSharedFundsBySenderId = async (senderId) => {
       if (snap.empty) return [];
 
       return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+   } catch (err) {
+      throw err;
+   }
+};
+
+// Edit shared funds
+export const editSharedFund = async (senderId, fundId, data) => {
+   const user = auth.currentUser;
+
+   if (!user) throw new Error("No user is logged in");
+   if (!senderId && !fundId) throw new Error("No senderId or fundId provided");
+   if (!data) throw new Error("No data provided");
+
+   try {
+      const fundRef = doc(
+         db,
+         "users",
+         user.uid,
+         "sharedFunds",
+         senderId,
+         "funds",
+         fundId,
+      );
+
+      await updateDoc(fundRef, {
+         ...data,
+         updatedAt: serverTimestamp(),
+      });
+
+      return true;
+   } catch (error) {
+      console.error("Error editing shared fund:", error);
+      throw error;
+   }
+};
+
+// Get recipients with whom the logged-in user has shared funds
+export const getRecipientsSharedByMe = async () => {
+   const user = auth.currentUser;
+   if (!user) throw new Error("No user is logged in");
+
+   try {
+      const userSnap = await getDoc(doc(db, "users", user.uid));
+      const sharedWith = userSnap.data()?.sharedWith || [];
+
+      const recipients = await Promise.all(
+         sharedWith.map(async (recipientId) => {
+            const recipientRef = doc(db, "users", recipientId);
+            const recipientSnap = await getDoc(recipientRef);
+            return { id: recipientId, ...recipientSnap.data() };
+         }),
+      );
+      return recipients;
    } catch (err) {
       throw err;
    }
@@ -532,14 +564,31 @@ export const getCategory = async () => {
    }
 };
 
-// Fetch All NAV list from your API
-export const fetchAllNAVs = async () => {
+// Fetch All data from API this returns all data about MF : Custom API
+export const fetchAllDataFromApi = async () => {
    try {
-      const res = await fetch("https://my-nav-rose.vercel.app/api/getList");
+      const res = await fetch(import.meta.env.VITE_NAV_DATA_API);
       const json = await res.json();
 
       if (!json?.data || !Array.isArray(json.data)) {
-         throw new Error("Invalid NAV data format");
+         throw new Error("Invalid data format from API");
+      }
+
+      return json.data; // Return the array of fund data [0: { schemeName, amfiCode, latestNav, navDate, isin1, isin2 }, ...]
+   } catch (err) {
+      console.error("Error fetching NAVs:", err);
+      return {};
+   }
+};
+
+// Fetch All data from API this returns all data about MF : Custom API
+export const fetchAllNAVs = async () => {
+   try {
+      const res = await fetch(import.meta.env.VITE_NAV_DATA_API);
+      const json = await res.json();
+
+      if (!json?.data || !Array.isArray(json.data)) {
+         throw new Error("Invalid data format from API");
       }
 
       // Normalize data to a map for quick lookup
