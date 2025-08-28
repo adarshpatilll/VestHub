@@ -91,9 +91,18 @@ const SharedSenders = () => {
                   <motion.button
                      key={sender.senderId}
                      onClick={() => {
-                        localStorage.setItem("senderId", btoa(sender.senderId));
+                        localStorage.setItem(
+                           "senderId",
+                           JSON.stringify({
+                              senderId: btoa(sender.senderId),
+                              senderEmail: btoa(sender.senderEmail),
+                           }),
+                        );
                         navigate("details", {
-                           state: { senderId: sender.senderId },
+                           state: {
+                              senderId: sender.senderId,
+                              senderEmail: sender.senderEmail,
+                           },
                         });
                      }}
                      className="flex items-center gap-3 rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-3 text-left"

@@ -4,25 +4,32 @@ import { toTitleCase } from "../lib/toTitleCase";
 import BackButton from "../components/BackButtonOrLink";
 import { AnimatePresence, motion } from "framer-motion";
 import { Search, X } from "lucide-react";
+import { IoWallet } from "react-icons/io5";
 import { searchFilter } from "../lib/searchFilter";
 import { getSharedFundsBySenderId } from "../firebase/data";
 import { useLocation } from "react-router-dom";
 import CircularLoader from "./../components/CircularLoader";
+import SmartViewWindow from "../components/SmartView";
 
 const SharedFunds = () => {
    const location = useLocation();
-   const { senderId } = location.state || {};
+   const { senderId, senderEmail } = location.state || {};
 
    const [funds, setFunds] = useState([]);
    const [categories, setCategories] = useState([]);
    const [loading, setLoading] = useState(true);
+
+   const [isSmartViewWindowOpen, setIsSmartViewWindowOpen] = useState(false);
+   const [isSmartViewBallVisible, setIsSmartViewBallVisible] = useState(true);
 
    const [activeCategory, setActiveCategory] = useState(null);
    const [query, setQuery] = useState("");
    const [showSearch, setShowSearch] = useState(false);
 
    // --- Fetch Funds from Firestore ---
-   const backupSenderId = atob(localStorage.getItem("senderId"));
+   const backupData = localStorage.getItem("senderId");
+   const backupSenderId = atob(JSON.parse(backupData).senderId);
+   const backupSenderEmail = atob(JSON.parse(backupData).senderEmail);
 
    useEffect(() => {
       const fetchFunds = async () => {
@@ -235,6 +242,57 @@ const SharedFunds = () => {
                         ? `No funds found for "${query}".`
                         : "No shared funds available in this category."}
                   </p>
+               )}
+
+               {isSmartViewBallVisible && (
+                  <motion.div
+                     onClick={() => {
+                        setIsSmartViewWindowOpen(true);
+                        setIsSmartViewBallVisible(false);
+                     }}
+                     className="text-dark absolute right-5 bottom-20 cursor-pointer rounded-full bg-yellow-500 p-2.5 md:right-4 md:bottom-4"
+                     animate={{
+                        boxShadow: [
+                           "0 0 3px rgba(250,204,21,0.8), 0 0 6px rgba(250,204,21,0.5)",
+                           "0 0 6px rgba(250,204,21,0.9), 0 0 10px rgba(250,204,21,0.6)",
+                           "0 0 3px rgba(250,204,21,0.8), 0 0 6px rgba(250,204,21,0.5)",
+                        ],
+                        scale: [1.0, 0.9, 1.0],
+                     }}
+                     transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                     }}
+                  >
+                     <motion.div
+                        animate={{
+                           filter: [
+                              "drop-shadow(0 0 2px rgba(250,204,21,0.7))",
+                              "drop-shadow(0 0 4px rgba(250,204,21,0.9))",
+                              "drop-shadow(0 0 2px rgba(250,204,21,0.7))",
+                           ],
+                        }}
+                        transition={{
+                           duration: 1.8,
+                           repeat: Infinity,
+                           ease: "easeInOut",
+                        }}
+                     >
+                        <IoWallet size={18} className="text-dark" />
+                     </motion.div>
+                  </motion.div>
+               )}
+
+               {isSmartViewWindowOpen && (
+                  <SmartViewWindow
+                     funds={funds}
+                     senderEmail={senderEmail || backupSenderEmail}
+                     onClose={() => {
+                        setIsSmartViewWindowOpen(false);
+                        setIsSmartViewBallVisible(true);
+                     }}
+                  />
                )}
             </div>
          </div>
