@@ -10,6 +10,7 @@ import { getSharedFundsBySenderId } from "../firebase/data";
 import { useLocation } from "react-router-dom";
 import CircularLoader from "./../components/CircularLoader";
 import SmartViewWindow from "../components/SmartView";
+import { useIOSPWA } from "../hooks/useIOSPWA";
 
 const SharedFunds = () => {
    const location = useLocation();
@@ -26,11 +27,13 @@ const SharedFunds = () => {
    const [query, setQuery] = useState("");
    const [showSearch, setShowSearch] = useState(false);
 
-   // --- Fetch Funds from Firestore ---
+   const isIOSPWA = useIOSPWA();
+
    const backupData = localStorage.getItem("senderId");
    const backupSenderId = atob(JSON.parse(backupData).senderId);
    const backupSenderEmail = atob(JSON.parse(backupData).senderEmail);
 
+   // --- Fetch Funds from Firestore ---
    useEffect(() => {
       const fetchFunds = async () => {
          setLoading(true);
@@ -250,7 +253,7 @@ const SharedFunds = () => {
                         setIsSmartViewWindowOpen(true);
                         setIsSmartViewBallVisible(false);
                      }}
-                     className="text-dark fixed right-4 bottom-20 cursor-pointer rounded-full bg-yellow-500 p-2.5 md:bottom-4"
+                     className={`text-dark fixed right-4 bottom-20 ${isIOSPWA ? "bottom-[6.5rem]" : "bottom-20"} cursor-pointer rounded-full bg-yellow-500 p-2.5 md:bottom-4`}
                      animate={{
                         boxShadow: [
                            "0 0 3px rgba(250,204,21,0.8), 0 0 6px rgba(250,204,21,0.5)",
