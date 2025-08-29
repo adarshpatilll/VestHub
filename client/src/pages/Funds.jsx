@@ -29,7 +29,7 @@ const Funds = () => {
    }
 
    return (
-      <>
+      <section className="max-w-5xl mx-auto">
          {isBasePath ? (
             <motion.div
                initial="hidden"
@@ -41,7 +41,7 @@ const Funds = () => {
                      transition: { staggerChildren: 0.2 },
                   },
                }}
-               className="grid gap-4 sm:grid-cols-3"
+               className="grid gap-4 md:grid-cols-3 p-4"
             >
                {buttons.map((btn, i) => (
                   <motion.div
@@ -65,7 +65,7 @@ const Funds = () => {
          ) : (
             <Outlet />
          )}
-      </>
+      </section>
    );
 };
 
