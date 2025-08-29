@@ -21,9 +21,9 @@ const AppContent = () => {
    const bgClass = darkBgPaths.includes(path) ? "bg-neutral-950" : "bg-dark";
 
    return (
-      <div className={`${bgClass}`}>
+      <div id="appContentWrapper" className={`${bgClass}`}>
          <AnimatePresence mode="wait">
-            <motion.div key={location.pathname}>
+            <motion.div id="appContent" key={location.pathname}>
                <Outlet />
             </motion.div>
          </AnimatePresence>

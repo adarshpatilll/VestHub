@@ -141,12 +141,7 @@ const AddFund = () => {
    }
 
    return (
-      <motion.div
-         className="bg-dark flex min-h-full items-center justify-center md:items-start"
-         initial={{ opacity: 0 }}
-         animate={{ opacity: 1 }}
-         transition={{ duration: 0.4 }}
-      >
+      <div className="bg-dark text-light mx-auto min-h-full max-w-5xl px-2 py-2 flex flex-col md:items-start items-center">
          <motion.div
             className="bg-dark text-light w-full max-w-md space-y-8 rounded-2xl md:max-w-full md:space-y-16"
             initial={{ y: 40, opacity: 0 }}
@@ -311,7 +306,7 @@ const AddFund = () => {
             <motion.button
                onClick={handleAddFund}
                disabled={loading}
-               className={`w-full rounded-lg bg-yellow-600 p-3 font-medium hover:bg-yellow-700 md:max-w-sm ${
+               className={`w-full rounded-lg bg-yellow-600 p-3 font-medium hover:bg-yellow-700 md:max-w-sm transition-colors ${
                   loading ? "cursor-not-allowed bg-yellow-700" : ""
                }`}
                initial={{ opacity: 0, scale: 0.95 }}
@@ -321,7 +316,7 @@ const AddFund = () => {
                {loading ? "Adding..." : "Add Fund"}
             </motion.button>
          </motion.div>
-      </motion.div>
+      </div>
    );
 };
 

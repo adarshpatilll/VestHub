@@ -94,17 +94,11 @@ const SmartViewWindow = ({ funds, onClose, senderEmail }) => {
    ];
 
    return (
-      <motion.div
-         initial={{ opacity: 0 }}
-         animate={{ opacity: 1 }}
-         exit={{ opacity: 0 }}
-         className="fixed inset-0 z-30 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
-      >
+      <motion.div className="fixed inset-0 z-30 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0 }}
-            transition={{ duration: 0.15, ease: "easeInOut" }}
+            exit={{ opacity: 0, scale: 0.5 }}
             className="mx-4 w-full max-w-sm rounded-2xl bg-neutral-900 p-5 shadow-xl md:max-w-xl"
          >
             {/* Header */}

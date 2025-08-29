@@ -27,7 +27,7 @@ const SharedSenders = () => {
 
    return (
       <motion.div
-         className=""
+         className="bg-dark text-light min-h-full px-2 py-2 mx-auto max-w-5xl"
          initial={{ opacity: 0 }}
          animate={{ opacity: 1 }}
          exit={{ opacity: 0 }}

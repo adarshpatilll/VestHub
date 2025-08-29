@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { searchFilter } from "../lib/searchFilter";
+import { motion } from "framer-motion";
 
 export default function SearchSelect({
    label,
@@ -29,7 +30,31 @@ export default function SearchSelect({
    }, []);
 
    // Filter options based on query
-   const filtered = searchFilter(options, query);
+   const filtered = searchFilter(options, query.trim());
+
+   const HighlightedText = ({ text, query }) => {
+      if (!query) return <>{text}</>;
+
+      const regex = new RegExp(`(${query})`, "gi");
+      const parts = text.split(regex);
+
+      return (
+         <>
+            {parts.map((part, i) =>
+               regex.test(part) ? (
+                  <span
+                     key={i}
+                     style={{ color: "#fdc700", fontWeight: "bold" }}
+                  >
+                     {part}
+                  </span>
+               ) : (
+                  <span key={i}>{part}</span>
+               ),
+            )}
+         </>
+      );
+   };
 
    return (
       <div ref={ref} className="relative flex w-full flex-col select-none">
@@ -42,7 +67,10 @@ export default function SearchSelect({
                   ? "border-light border bg-neutral-800" // active state
                   : "border border-neutral-700 bg-neutral-800"
             }`}
-            onClick={() => setOpen((prev) => !prev)}
+            onClick={() => {
+               setOpen((prev) => !prev);
+               setQuery("");
+            }}
          >
             <span
                className={`flex-1 truncate ${
@@ -64,7 +92,11 @@ export default function SearchSelect({
 
          {/* Dropdown */}
          {open && (
-            <div className="absolute top-full left-0 z-10 mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-900 shadow-lg">
+            <motion.div
+               initial={{ opacity: 0, y: -10 }}
+               animate={{ opacity: 1, y: 0 }}
+               className="absolute top-full left-0 z-10 mt-1 w-full rounded-lg border border-neutral-700 bg-neutral-900 shadow-lg"
+            >
                {/* Search */}
                <input
                   type="text"
@@ -76,7 +108,11 @@ export default function SearchSelect({
                />
 
                {/* Options */}
-               <ul className="max-h-52 overflow-y-auto">
+               <motion.ul
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  className="hide-scrollbar max-h-52 overflow-y-auto"
+               >
                   {filtered.map((opt, idx) => (
                      <li
                         key={opt.value + idx}
@@ -87,7 +123,7 @@ export default function SearchSelect({
                            setQuery("");
                         }}
                      >
-                        {opt.label}
+                        <HighlightedText text={opt.label} query={query.trim()} />
                      </li>
                   ))}
 
@@ -112,8 +148,8 @@ export default function SearchSelect({
                         No results found
                      </li>
                   )}
-               </ul>
-            </div>
+               </motion.ul>
+            </motion.div>
          )}
       </div>
    );
