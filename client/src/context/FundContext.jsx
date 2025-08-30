@@ -15,7 +15,7 @@ import {
 } from "../firebase/data";
 import { serverTimestamp } from "firebase/firestore";
 import { useAuthContext } from "./AuthContext";
-import { updateUserFundsWithNAV } from "../lib/updateUserFundsWithNAV";
+import { updateUserAndSharedFundsWithLatestNav } from "../lib/updateFundsWithNAV";
 import { fetchAllDataFromApi } from "./../firebase/data";
 
 const FundsContext = createContext();
@@ -28,7 +28,6 @@ export const FundsProvider = ({ children }) => {
    const [categories, setCategories] = useState([]);
 
    const [fundsLoading, setFundsLoading] = useState(true);
-   const [sharedFundsLoading, setSharedFundsLoading] = useState(true);
    const [schemesDataLoading, setSchemesDataLoading] = useState(true);
    const [categoriesLoading, setCategoriesLoading] = useState(true);
    const [loading, setLoading] = useState(true);
@@ -42,7 +41,7 @@ export const FundsProvider = ({ children }) => {
       try {
          const data = await getFunds();
 
-         const result = await updateUserFundsWithNAV(data, {
+         const result = await updateUserAndSharedFundsWithLatestNav(data, {
             includeShared: true,
             saveToFirestore: true,
          });
@@ -99,7 +98,9 @@ export const FundsProvider = ({ children }) => {
             });
 
             // Enrich fund with latest NAV details
-            const enrichedFund = (await updateUserFundsWithNAV([newFund]))[0];
+            const enrichedFund = (
+               await updateUserAndSharedFundsWithLatestNav([newFund])
+            )[0];
 
             // Add the new fund to state
             setFunds((prev) => [...prev, enrichedFund]);
@@ -134,7 +135,7 @@ export const FundsProvider = ({ children }) => {
             setFundsLoading(false);
          }
       },
-      [updateUserFundsWithNAV],
+      [updateUserAndSharedFundsWithLatestNav],
    );
 
    // --- Edit fund ---
@@ -229,12 +230,12 @@ export const FundsProvider = ({ children }) => {
    const refreshNav = useCallback(async () => {
       if (!funds.length) return;
 
-      const enriched = await updateUserFundsWithNAV(funds, {
+      const enriched = await updateUserAndSharedFundsWithLatestNav(funds, {
          saveToFirestore: true,
       });
 
       setFunds(enriched);
-   }, [funds, updateUserFundsWithNAV]);
+   }, [funds, updateUserAndSharedFundsWithLatestNav]);
 
    // Fetch Self funds and categories and schemes also on user login
    useEffect(() => {

@@ -11,7 +11,7 @@
 //  * @param {number} [options.batchSize=30] - Batch size for Firestore writes
 //  * @returns {Promise<Array>} - Updated funds
 //  */
-// export const updateUserFundsWithNAV = async (
+// export const updateUserAndSharedFundsWithLatestNav = async (
 //    fundList,
 //    { saveToFirestore = false, batchSize = 30 } = {},
 // ) => {
@@ -136,7 +136,7 @@ import { getCalculations } from "./getCalculations";
  * @param {number} [options.batchSize=30] - Batch size for Firestore writes
  * @returns {Promise<{userFunds: Array, sharedFunds: Object}>} - Updated funds
  */
-export const updateUserFundsWithNAV = async (
+export const updateUserAndSharedFundsWithLatestNav = async (
    fundList,
    { includeShared = false, saveToFirestore = true, batchSize = 30 } = {},
 ) => {
@@ -226,7 +226,7 @@ export const updateUserFundsWithNAV = async (
 
          updatedSharedFunds[sender.senderId] = updatedFunds;
 
-         // Save to Firestore if required
+         // Save shared funds to Firestore if required
          if (saveToFirestore && fundsToUpdateIds.length) {
             for (let i = 0; i < fundsToUpdateIds.length; i += batchSize) {
                const batch = fundsToUpdateIds.slice(i, i + batchSize);
@@ -242,7 +242,7 @@ export const updateUserFundsWithNAV = async (
       }
    }
 
-   // 3️⃣ Save user funds if required
+   // 3️⃣ Save user funds to Firestore if required
    if (saveToFirestore && userFundIds.length) {
       for (let i = 0; i < userFundIds.length; i += batchSize) {
          const batch = userFundIds.slice(i, i + batchSize);
