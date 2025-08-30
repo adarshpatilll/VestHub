@@ -15,7 +15,10 @@ import {
 } from "../firebase/data";
 import { serverTimestamp } from "firebase/firestore";
 import { useAuthContext } from "./AuthContext";
-import { updateUserAndSharedFundsWithLatestNav } from "../lib/updateFundsWithNAV";
+import {
+   updateUserFundsWithLatestNav,
+   updateSharedFundsWithLatestNav,
+} from "../lib/updateFundsWithNAV";
 import { fetchAllDataFromApi } from "./../firebase/data";
 
 const FundsContext = createContext();
@@ -36,18 +39,18 @@ export const FundsProvider = ({ children }) => {
 
    const { user } = useAuthContext();
 
+   const [isFetchSharedFunds, setIsFetchSharedFunds] = useState(false);
+
    const fetchFunds = async () => {
       setFundsLoading(true);
       try {
          const data = await getFunds();
 
-         const result = await updateUserAndSharedFundsWithLatestNav(data, {
-            includeShared: true,
+         const userFunds = await updateUserFundsWithLatestNav(data, {
             saveToFirestore: true,
          });
 
-         setFunds(result.userFunds);
-         setSharedFunds(result.sharedFunds);
+         setFunds(userFunds);
       } catch (err) {
          setError(err.message);
       } finally {
@@ -80,63 +83,74 @@ export const FundsProvider = ({ children }) => {
       }
    };
 
+   const fetchSharedFunds = async () => {
+      setLoading(true);
+      try {
+         const data = await updateSharedFundsWithLatestNav({
+            saveToFirestore: true,
+         });
+         setSharedFunds(data);
+      } catch (err) {
+         setError(err.message);
+      } finally {
+         setLoading(false);
+      }
+   };
+
    // --- Add fund ---
-   const add = useCallback(
-      async (fundData) => {
-         setFundsLoading(true);
-         try {
-            // Normalize category: lowercase + trim to avoid duplicates like "Equity" vs "equity "
-            const normalizeCategory = fundData.category
-               ? fundData.category.trim().toLowerCase()
-               : "";
+   const add = useCallback(async (fundData) => {
+      setFundsLoading(true);
+      try {
+         // Normalize category: lowercase + trim to avoid duplicates like "Equity" vs "equity "
+         const normalizeCategory = fundData.category
+            ? fundData.category.trim().toLowerCase()
+            : "";
 
-            // Save new fund in Firestore
-            const newFund = await addFund({
-               ...fundData,
-               category: normalizeCategory,
-               createdAt: serverTimestamp(),
-            });
+         // Save new fund in Firestore
+         const newFund = await addFund({
+            ...fundData,
+            category: normalizeCategory,
+            createdAt: serverTimestamp(),
+         });
 
-            // Enrich fund with latest NAV details
-            const enrichedFund = (
-               await updateUserAndSharedFundsWithLatestNav([newFund])
-            )[0];
+         // Enrich fund with latest NAV details
+         const enrichedFund = (
+            await updateUserFundsWithLatestNav([newFund])
+         )[0];
 
-            // Add the new fund to state
-            setFunds((prev) => [...prev, enrichedFund]);
+         // Add the new fund to state
+         setFunds((prev) => [...prev, enrichedFund]);
 
-            // --- Update categories state ---
-            if (normalizeCategory) {
-               setCategories((prev) => {
-                  // Check if category already exists
-                  const existing = prev.find(
-                     (c) => c.name.toLowerCase() === normalizeCategory,
+         // --- Update categories state ---
+         if (normalizeCategory) {
+            setCategories((prev) => {
+               // Check if category already exists
+               const existing = prev.find(
+                  (c) => c.name.toLowerCase() === normalizeCategory,
+               );
+
+               if (existing) {
+                  // If category exists → increment its count
+                  return prev.map((c) =>
+                     c.name.toLowerCase() === normalizeCategory
+                        ? { ...c, count: (c.count ?? 0) + 1 }
+                        : c,
                   );
-
-                  if (existing) {
-                     // If category exists → increment its count
-                     return prev.map((c) =>
-                        c.name.toLowerCase() === normalizeCategory
-                           ? { ...c, count: (c.count ?? 0) + 1 }
-                           : c,
-                     );
-                  } else {
-                     // If category does not exist → create new with count = 1
-                     return [...prev, { name: normalizeCategory, count: 1 }];
-                  }
-               });
-            }
-         } catch (err) {
-            // Store error in context state
-            setError(err.message);
-            throw err;
-         } finally {
-            // Stop loading regardless of success or failure
-            setFundsLoading(false);
+               } else {
+                  // If category does not exist → create new with count = 1
+                  return [...prev, { name: normalizeCategory, count: 1 }];
+               }
+            });
          }
-      },
-      [updateUserAndSharedFundsWithLatestNav],
-   );
+      } catch (err) {
+         // Store error in context state
+         setError(err.message);
+         throw err;
+      } finally {
+         // Stop loading regardless of success or failure
+         setFundsLoading(false);
+      }
+   }, []);
 
    // --- Edit fund ---
    const edit = useCallback(
@@ -230,12 +244,12 @@ export const FundsProvider = ({ children }) => {
    const refreshNav = useCallback(async () => {
       if (!funds.length) return;
 
-      const enriched = await updateUserAndSharedFundsWithLatestNav(funds, {
+      const enriched = await updateUserFundsWithLatestNav(funds, {
          saveToFirestore: true,
       });
 
       setFunds(enriched);
-   }, [funds, updateUserAndSharedFundsWithLatestNav]);
+   }, [funds]);
 
    // Fetch Self funds and categories and schemes also on user login
    useEffect(() => {
@@ -245,6 +259,13 @@ export const FundsProvider = ({ children }) => {
          fetchSchemeData();
       }
    }, [user]);
+
+   // Fetch shared funds when isFetchSharedFunds is true
+   useEffect(() => {
+      if (isFetchSharedFunds) {
+         fetchSharedFunds();
+      }
+   }, [isFetchSharedFunds]);
 
    // --- Set global loading ---
    useEffect(() => {
@@ -265,6 +286,7 @@ export const FundsProvider = ({ children }) => {
             edit,
             remove,
             refreshNav,
+            setIsFetchSharedFunds,
          }}
       >
          {children}

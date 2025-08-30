@@ -5,12 +5,21 @@ import { User } from "lucide-react";
 import BackButton from "../components/BackButtonOrLink";
 import { motion, AnimatePresence } from "framer-motion";
 import CircularLoader from "./../components/CircularLoader";
+import { useFundsContext } from "../context/FundContext";
 
 const SharedSenders = () => {
    const [senders, setSenders] = useState([]);
    const [loading, setLoading] = useState(true);
    const navigate = useNavigate();
 
+   const { setIsFetchSharedFunds } = useFundsContext();
+
+   // This is updating shared funds data when user comes to /shared-senders
+   useEffect(() => {
+      setIsFetchSharedFunds(true);
+   }, []);
+
+   // Fetch senders who shared funds with the user
    useEffect(() => {
       const fetchSenders = async () => {
          setLoading(true);
@@ -27,7 +36,7 @@ const SharedSenders = () => {
 
    return (
       <motion.div
-         className="bg-dark text-light min-h-full px-2 py-2 mx-auto max-w-5xl"
+         className="bg-dark text-light mx-auto min-h-full max-w-5xl px-2 py-2"
          initial={{ opacity: 0 }}
          animate={{ opacity: 1 }}
          exit={{ opacity: 0 }}
