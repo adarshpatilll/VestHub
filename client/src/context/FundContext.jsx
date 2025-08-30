@@ -31,8 +31,8 @@ export const FundsProvider = ({ children }) => {
    const [categories, setCategories] = useState([]);
 
    const [fundsLoading, setFundsLoading] = useState(true);
-   const [schemesDataLoading, setSchemesDataLoading] = useState(true);
-   const [categoriesLoading, setCategoriesLoading] = useState(true);
+   const [schemesDataLoading, setSchemesDataLoading] = useState(false);
+   const [categoriesLoading, setCategoriesLoading] = useState(false);
    const [loading, setLoading] = useState(true);
 
    const [error, setError] = useState(null);
@@ -40,6 +40,8 @@ export const FundsProvider = ({ children }) => {
    const { user } = useAuthContext();
 
    const [isFetchSharedFunds, setIsFetchSharedFunds] = useState(false);
+   const [isFetchCategories, setIsFetchCategories] = useState(false);
+   const [isFetchSchemesData, setIsFetchSchemesData] = useState(false);
 
    const fetchFunds = async () => {
       setFundsLoading(true);
@@ -251,21 +253,33 @@ export const FundsProvider = ({ children }) => {
       setFunds(enriched);
    }, [funds]);
 
-   // Fetch Self funds and categories and schemes also on user login
+   // Fetch Self funds also on user login
    useEffect(() => {
       if (user) {
          fetchFunds();
-         fetchCategories();
-         fetchSchemeData();
       }
    }, [user]);
 
-   // Fetch shared funds when isFetchSharedFunds is true
+   // Fetch shared funds when isFetchSharedFunds is true (/shared-funds === true)
    useEffect(() => {
       if (isFetchSharedFunds) {
          fetchSharedFunds();
       }
    }, [isFetchSharedFunds]);
+
+   // Fetch categories when isFetchCategories is true (/funds === true)
+   useEffect(() => {
+      if (isFetchCategories) {
+         fetchCategories();
+      }
+   }, [isFetchCategories]);
+
+   // Fetch schemes data when isFetchSchemesData is true (/add-fund === true)
+   useEffect(() => {
+      if (isFetchSchemesData) {
+         fetchSchemeData();
+      }
+   }, [isFetchSchemesData]);
 
    // --- Set global loading ---
    useEffect(() => {
@@ -287,6 +301,8 @@ export const FundsProvider = ({ children }) => {
             remove,
             refreshNav,
             setIsFetchSharedFunds,
+            setIsFetchCategories,
+            setIsFetchSchemesData,
          }}
       >
          {children}

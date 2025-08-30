@@ -4,11 +4,18 @@ import { getSendersWhoSharedWithMe } from "../firebase/data";
 import { Outlet, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import ButtonCard from "./../components/ButtonCard";
+import { useFundsContext } from "../context/FundContext";
 
 const Funds = () => {
    const location = useLocation();
    const isBasePath = location.pathname === "/funds";
    const [senders, setSenders] = useState([]);
+
+   const { setIsFetchCategories } = useFundsContext();
+
+   useEffect(() => {
+      setIsFetchCategories(true);
+   }, []);
 
    useEffect(() => {
       const fetchSenders = async () => {
@@ -29,7 +36,7 @@ const Funds = () => {
    }
 
    return (
-      <section className="max-w-5xl mx-auto">
+      <section className="mx-auto max-w-5xl">
          {isBasePath ? (
             <motion.div
                initial="hidden"
@@ -41,7 +48,7 @@ const Funds = () => {
                      transition: { staggerChildren: 0.2 },
                   },
                }}
-               className="grid gap-4 md:grid-cols-3 p-4"
+               className="grid gap-4 p-4 md:grid-cols-3"
             >
                {buttons.map((btn, i) => (
                   <motion.div
