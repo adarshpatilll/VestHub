@@ -417,12 +417,10 @@ const Account = () => {
                   />
 
                   <motion.button
-                     whileHover={selectedUser ? { scale: 1.01 } : {}}
-                     whileTap={selectedUser ? { scale: 0.99 } : {}}
                      onClick={() => setShareModalOpen(true)}
                      disabled={!selectedUser}
-                     className={`text-light flex items-center justify-center gap-2 rounded-lg bg-yellow-600 px-4 py-2 transition ${
-                        selectedUser ? "hover:bg-yellow-500" : ""
+                     className={`text-dark flex items-center justify-center gap-2 rounded-lg bg-yellow-600 px-4 py-2 transition ${
+                        selectedUser ? "hover:bg-yellow-700" : ""
                      } disabled:cursor-not-allowed disabled:opacity-50`}
                   >
                      <Share2 className="h-5 w-5" /> Share Funds

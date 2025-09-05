@@ -315,7 +315,7 @@ const AddFund = () => {
             <motion.button
                onClick={handleAddFund}
                disabled={loading}
-               className={`w-full rounded-lg bg-yellow-600 p-3 font-medium transition-colors hover:bg-yellow-700 md:max-w-sm ${
+               className={`text-dark w-full rounded-lg bg-yellow-600 p-3 font-medium transition-colors hover:bg-yellow-700 md:max-w-sm ${
                   loading ? "cursor-not-allowed bg-yellow-700" : ""
                }`}
                initial={{ opacity: 0, scale: 0.95 }}

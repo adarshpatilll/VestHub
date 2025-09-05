@@ -261,7 +261,7 @@ const EditModal = ({
                <button
                   onClick={handleUpdateFund}
                   disabled={loading}
-                  className={`w-full rounded-lg bg-yellow-600 p-3 font-medium hover:bg-yellow-700 ${
+                  className={`text-dark w-full transition-colors rounded-lg bg-yellow-600 p-3 font-medium hover:bg-yellow-700 ${
                      loading ? "cursor-not-allowed bg-yellow-700" : ""
                   }`}
                >

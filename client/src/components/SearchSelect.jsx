@@ -42,10 +42,7 @@ export default function SearchSelect({
          <>
             {parts.map((part, i) =>
                regex.test(part) ? (
-                  <span
-                     key={i}
-                     style={{ color: "#fdc700", fontWeight: "bold" }}
-                  >
+                  <span key={i} style={{ color: "#fdc700" }}>
                      {part}
                   </span>
                ) : (
@@ -123,7 +120,10 @@ export default function SearchSelect({
                            setQuery("");
                         }}
                      >
-                        <HighlightedText text={opt.label} query={query.trim()} />
+                        <HighlightedText
+                           text={opt.label}
+                           query={query.trim()}
+                        />
                      </li>
                   ))}
 
