@@ -11,6 +11,7 @@ import { formatNumber } from "./../lib/formatNumber";
 import CircularLoader from "./../components/CircularLoader";
 import { useFundsContext } from "../context/FundContext";
 import { useAuthContext } from "../context/AuthContext";
+import Skeleton from "../components/Skeleton";
 
 const Home = () => {
    const { funds = [], loading } = useFundsContext();
@@ -56,10 +57,6 @@ const Home = () => {
               100
            ).toFixed(2)
          : 0;
-
-   if (loading) {
-      return <CircularLoader label="Loading Portfolio..." />;
-   }
 
    const data = [
       {
@@ -144,7 +141,12 @@ const Home = () => {
             className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5"
          >
             {data.map((itemData, index) => (
-               <SummaryCard key={index} variants={item} {...itemData} />
+               <SummaryCard
+                  loading={loading}
+                  key={index}
+                  variants={item}
+                  {...itemData}
+               />
             ))}
          </motion.div>
       </div>
@@ -174,6 +176,7 @@ const SummaryCard = ({
    pulseColor,
    textColor,
    variants,
+   loading,
 }) => {
    return (
       <motion.div
@@ -193,9 +196,15 @@ const SummaryCard = ({
             <p className="text-sm text-neutral-400">{label}</p>
             <Icon className="h-5 w-5 text-neutral-400" />
          </div>
-         <p className={`relative z-10 mt-3 text-xl font-bold ${textColor}`}>
-            <AnimatedNumber value={value} format={format} />
-         </p>
+         <div
+            className={`relative z-10 mt-3 truncate text-xl font-bold ${textColor}`}
+         >
+            {loading ? (
+               <Skeleton className="h-7 w-full rounded" />
+            ) : (
+               <AnimatedNumber value={value} format={format} />
+            )}
+         </div>
       </motion.div>
    );
 };

@@ -10,7 +10,6 @@ import CircularLoader from "../components/CircularLoader";
 import { formatSchemeName } from "../lib/formatSchemeName";
 
 const AddFund = () => {
-   // const [schemes, setSchemes] = useState([]);
    const [loadingNav, setLoadingNav] = useState(false);
 
    const {

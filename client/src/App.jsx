@@ -4,7 +4,7 @@ import { router } from "./routes/router.config";
 import useAntiInspect from "./hooks/useAntiInspect";
 
 const App = () => {
-   useAntiInspect();
+   // useAntiInspect();
 
    return (
       <>
