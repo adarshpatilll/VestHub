@@ -1,4 +1,3 @@
-// context/FundContext.jsx
 import {
    createContext,
    useContext,
@@ -6,23 +5,29 @@ import {
    useEffect,
    useCallback,
 } from "react";
+// Import auth context to get current user
+import { useAuthContext } from "./AuthContext";
+// Import server timestamp for Firestore
+import { serverTimestamp } from "firebase/firestore";
+// Import Firestore functions for data operations
 import {
    getFunds,
    getCategory,
    addFund,
    editFund,
    deleteFund,
+   fetchAllDataFromApi,
 } from "../firebase/data";
-import { serverTimestamp } from "firebase/firestore";
-import { useAuthContext } from "./AuthContext";
+// Import utility functions to update funds with latest NAV
 import {
    updateUserFundsWithLatestNav,
    updateSharedFundsWithLatestNav,
 } from "../lib/updateFundsWithNAV";
-import { fetchAllDataFromApi } from "./../firebase/data";
 
+// Create context for funds
 const FundsContext = createContext();
 
+// Provider component to wrap the app and provide funds state
 export const FundsProvider = ({ children }) => {
    const [funds, setFunds] = useState([]);
    const [sharedFunds, setSharedFunds] = useState({});
