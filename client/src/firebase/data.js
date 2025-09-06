@@ -105,7 +105,7 @@ export const loginUser = async (email, password) => {
 
 export const logoutUser = async () => {
    try {
-      localStorage.removeItem("senderId")
+      localStorage.removeItem("senderId");
       await signOut(auth);
    } catch (error) {
       throw error;
@@ -581,7 +581,7 @@ export const fetchAllDataFromApi = async () => {
    }
 };
 
-// Fetch All data from API this returns all data about MF : Custom API
+// Fetch All NAVs from API this returns all NAVs about MF : Custom API
 export const fetchAllNAVs = async () => {
    try {
       const res = await fetch(import.meta.env.VITE_NAV_DATA_API);
